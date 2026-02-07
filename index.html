@@ -56,7 +56,7 @@
             background: var(--glass); border: 2px solid var(--neon-purple); 
             box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
             backdrop-filter: blur(20px); z-index: 200; display: none; flex-direction: column; overflow: hidden; 
-            bottom: 81px;  /* exact 1mm gap */
+            bottom: 81px;
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
 
@@ -255,20 +255,16 @@
                 height: '100%',
                 width: '100%',
                 videoId: 'vGXERI3UW3k',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'vGXERI3UW3k',
-                    'rel': 0,
-                    'playsinline': 1,
-                    'modestbranding': 1
-                },
-                events: {
-                    'onReady': function(event) {
-                        event.target.mute();  // policy compliance
-                    }
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'mute': 0, 
+                    'loop': 1, 
+                    'playlist': 'vGXERI3UW3k', 
+                    'rel': 0, 
+                    'showinfo': 0,
+                    'modestbranding': 1,
+                    'playsinline': 1
                 }
             });
 
@@ -276,20 +272,16 @@
                 height: '100%',
                 width: '100%',
                 videoId: 'W54Y0cn78NY',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'W54Y0cn78NY',
-                    'rel': 0,
-                    'playsinline': 1,
-                    'modestbranding': 1
-                },
-                events: {
-                    'onReady': function(event) {
-                        // no auto-play
-                    }
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'mute': 0, 
+                    'loop': 1, 
+                    'playlist': 'W54Y0cn78NY', 
+                    'rel': 0, 
+                    'showinfo': 0,
+                    'modestbranding': 1,
+                    'playsinline': 1
                 }
             });
         }
@@ -297,24 +289,16 @@
         function initLanding() {
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
-
-            if (landingPlayer) {
-                landingPlayer.unMute();
-                landingPlayer.playVideo();
-            }
+            // landingPlayer starts autoplay with sound from playerVars
         }
 
         function enterTerminal() {
             if (landingPlayer) landingPlayer.pauseVideo();
-
+            
             setTimeout(() => {
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
-
-                if (mainPlayer) {
-                    mainPlayer.unMute();
-                    mainPlayer.playVideo();
-                }
+                // mainPlayer starts autoplay with sound from playerVars
             }, 1000);
         }
 
@@ -325,10 +309,7 @@
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
-            if (ico) {
-                ico.classList.add('active');
-                ico.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-            }
+            if (ico) ico.classList.add('active');
         }
 
         function closeWin(id) {
