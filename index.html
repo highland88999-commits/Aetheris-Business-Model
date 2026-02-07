@@ -140,7 +140,7 @@
 </div>
 
 <div id="landing-stage" onclick="enterTerminal()">
-    <!-- Landing video (unmuted) -->
+    <!-- Landing video (unmuted, autoplay) -->
     <iframe class="full-vid" 
             src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
             frameborder="0" allow="autoplay"></iframe>
@@ -150,13 +150,13 @@
 <div id="main-terminal">
     <div id="bg-shield" onclick="closeAllWindows()"></div>
 
-    <!-- Main background video (unmuted) -->
+    <!-- Main background video (unmuted, autoplay) -->
     <iframe class="full-vid" 
             src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
             frameborder="0" style="opacity:0.35"></iframe>
 
-    <!-- Wednesday playlist at 50% volume (hidden, plays on main screen) -->
-    <audio id="wednesday-bg" loop volume="0.5">
+    <!-- Wednesday playlist at 60% volume (hidden, plays on main screen only) -->
+    <audio id="wednesday-bg" loop volume="0.6">
         <source src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" type="audio/mp3">
     </audio>
 
@@ -388,12 +388,19 @@
     function initLanding() {
         document.getElementById('entry-gate').style.display = 'none';
         document.getElementById('landing-stage').style.display = 'flex';
+        // Landing Eminem playlist at 50% volume (only during landing)
+        const landingAudio = document.createElement('audio');
+        landingAudio.src = "https://www.youtube.com/embed/videoseries?list=RDPKsvThMFZII&playnext=1";
+        landingAudio.loop = true;
+        landingAudio.volume = 0.5;
+        landingAudio.play();
+        document.body.appendChild(landingAudio);
     }
 
     function enterTerminal() {
         document.getElementById('landing-stage').style.display = 'none';
         document.getElementById('main-terminal').style.display = 'block';
-        document.getElementById('wednesday-bg').play(); // Start Wednesday playlist at 50% volume
+        document.getElementById('wednesday-bg').play(); // Start Wednesday playlist at 60% volume
         toggleWin('aetheris');
         setTimeout(() => toggleWin('specs'), 8000);
         setTimeout(() => toggleWin('farmbuild'), 16000);
@@ -425,7 +432,7 @@
     }
 </script>
 
-<audio id="wednesday-bg" loop volume="0.5">
+<audio id="wednesday-bg" loop volume="0.6">
     <source src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" type="audio/mp3">
 </audio>
 </body>
