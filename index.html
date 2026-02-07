@@ -57,7 +57,7 @@
             background: var(--glass); border: 2px solid var(--neon-purple); 
             box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
             backdrop-filter: blur(20px); z-index: 200; display: none; flex-direction: column; overflow: hidden; 
-            bottom: 81px; /* 80px dock + 1mm gap */
+            bottom: 81px;
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
 
@@ -254,7 +254,7 @@
             landingPlayer = new YT.Player('landing-player', {
                 events: {
                     'onReady': function(event) {
-                        event.target.mute(); // initial mute for autoplay policy
+                        event.target.mute(); // policy compliance - mute on load
                     }
                 }
             });
@@ -262,7 +262,7 @@
             mainPlayer = new YT.Player('main-player', {
                 events: {
                     'onReady': function(event) {
-                        // Do not play here - wait for user entry
+                        // Do NOT play or unmute here - wait for explicit user action
                     }
                 }
             });
@@ -272,7 +272,7 @@
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
 
-            // Unmute and play immediately after gate click (first interaction)
+            // First real click → unmute + play landing video with sound
             if (landingPlayer) {
                 landingPlayer.unMute();
                 landingPlayer.playVideo();
@@ -286,12 +286,11 @@
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
 
-                // Start main video after transition - unmuted
+                // After transition → unmute + play main video with sound
                 if (mainPlayer) {
                     mainPlayer.unMute();
                     mainPlayer.playVideo();
                 }
-                // No auto-open - user clicks icon to begin
             }, 1000);
         }
 
