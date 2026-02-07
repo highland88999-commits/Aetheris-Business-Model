@@ -15,18 +15,24 @@
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
-        body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Courier New', monospace; color: var(--nexus-blue); }
+        body, html { 
+            width:100%; height:100%; overflow:hidden; 
+            background:#000; font-family: 'Courier New', monospace; 
+            color: var(--nexus-blue); touch-action: manipulation;
+        }
 
+        /* ENTRY GATE */
         #entry-gate {
             position: fixed; inset: 0; z-index: 9999; background: #000;
             display: flex; justify-content: center; align-items: center; cursor: pointer;
         }
         .gate-btn {
             padding: 20px 40px; border: 1px solid var(--nexus-blue); border-radius: 100px;
-            color: var(--nexus-blue); letter-spacing: 10px; font-size: 0.8rem;
+            color: var(--nexus-blue); letter-spacing: 10px; font-size: clamp(0.7rem, 4vw, 0.8rem);
             text-shadow: 0 0 10px var(--nexus-blue); animation: breathe 3s infinite;
         }
 
+        /* LANDING STAGE */
         #landing-stage {
             position: fixed; inset: 0; z-index: 9000; background: #000;
             display: none; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer;
@@ -34,38 +40,43 @@
         }
         .full-vid { 
             position: absolute; inset: 0; width: 100%; height: 100%; 
-            object-fit: cover; pointer-events: none; 
+            object-fit: cover; pointer-events: none;
         }
         .abyss-btn {
             position: relative; z-index: 9001; padding: 18px 50px; border-radius: 60px;
             border: 2px solid var(--nexus-blue); background: rgba(0,0,0,0.3);
             backdrop-filter: blur(12px); color: var(--nexus-blue);
-            letter-spacing: 8px; font-size: 1rem; text-shadow: 0 0 15px var(--nexus-blue);
-            cursor: pointer; opacity: 0.85; transition: all 0.3s ease;
+            letter-spacing: 8px; font-size: clamp(0.9rem, 5vw, 1rem);
+            text-shadow: 0 0 15px var(--nexus-blue); cursor: pointer;
+            opacity: 0.85; transition: all 0.3s ease;
         }
         .abyss-btn:hover { opacity: 1; transform: scale(1.05); }
 
+        /* MAIN TERMINAL */
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
         #bg-shield { position: absolute; inset: 0; z-index: 5; cursor: pointer; }
 
         #win-oracle {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
-            width: 280px; height: 280px; border-radius: 50%;
-            border: 2px solid rgba(0, 212, 255, 0.4); overflow: hidden;
-            z-index: 50; opacity: 0.6; cursor: pointer;
+            width: clamp(220px, 35vw, 280px); height: clamp(220px, 35vw, 280px);
+            border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.4);
+            overflow: hidden; z-index: 50; opacity: 0.6; cursor: pointer;
         }
         .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); }
 
+        /* HOLOFRAMES – device adaptive */
         .holo-window {
-            position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
-            width: min(520px, 92vw); height: 75vh;
+            position: fixed; inset: 0; margin: auto;
+            width: 92vw; max-width: 520px; height: 80vh; max-height: 720px;
             background: var(--glass); border: 3px solid var(--neon-purple);
             box-shadow: 0 0 25px rgba(188, 19, 254, 0.4); border-radius: 40px;
             backdrop-filter: blur(25px); z-index: 200; display: none;
-            flex-direction: column; overflow: hidden; margin-bottom: 72px;
+            flex-direction: column; overflow: hidden; top: 10%; bottom: 80px;
         }
         .holo-window.active { display: flex; animation: zoomIn 0.5s ease-out forwards; }
-        .holo-window.minimized { height: 60px; overflow: hidden; opacity: 0.7; }
+        .holo-window.minimized {
+            height: 60px !important; overflow: hidden; opacity: 0.7; top: auto; bottom: 80px;
+        }
 
         .video-content { position: absolute; inset: 0; z-index: 1; opacity: 0.4; overflow: hidden; }
         .video-content iframe { width: 100%; height: 100%; border: none; }
@@ -78,17 +89,17 @@
 
         .holo-header {
             color: var(--emerald); text-shadow: var(--bloom-green);
-            letter-spacing: 4px; font-size: 1.5rem; text-align: center; margin-bottom: 10px;
+            letter-spacing: 4px; font-size: clamp(1.2rem, 4vw, 1.5rem);
+            text-align: center; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .minimize-btn { cursor: pointer; color: var(--nexus-blue); font-size: 1.5rem; }
+        .minimize-btn { cursor: pointer; color: var(--nexus-blue); font-size: clamp(1.2rem, 4vw, 1.5rem); }
 
         .product-scroll {
             overflow-y: auto; text-align: left; color: var(--nexus-blue);
-            font-family: 'Courier New', monospace; font-size: 0.9rem;
-            padding-right: 10px; scrollbar-width: thin;
-            scrollbar-color: var(--neon-purple) transparent;
+            font-size: clamp(0.8rem, 3.5vw, 0.9rem); padding-right: 10px;
+            scrollbar-width: thin; scrollbar-color: var(--neon-purple) transparent;
             flex-grow: 1;
         }
 
@@ -96,21 +107,27 @@
 
         #hud-dock {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 40px; z-index: 300;
-            background: rgba(0,0,0,0.6); padding: 10px 30px;
+            display: flex; gap: clamp(20px, 8vw, 40px); z-index: 300;
+            background: rgba(0,0,0,0.6); padding: 10px 20px;
             border-radius: 40px 40px 0 0; backdrop-filter: blur(20px);
             border: 1px solid var(--nexus-blue); border-bottom: none;
         }
         .icon {
-            width: 65px; height: 65px; border: 2px solid var(--nexus-blue);
-            border-radius: 20px; background: rgba(0, 212, 255, 0.1);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.8rem; transition: 0.4s;
+            width: clamp(50px, 12vw, 65px); height: clamp(50px, 12vw, 65px);
+            border: 2px solid var(--nexus-blue); border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: clamp(1.5rem, 6vw, 1.8rem); transition: 0.4s;
         }
         .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); }
 
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
         @keyframes zoomIn { from { opacity: 0; transform: translateX(-50%) scale(0.9); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
+
+        @media (max-width: 600px) {
+            .holo-window { top: 5%; height: 85vh; }
+            .hud-dock { padding: 8px 15px; gap: 20px; }
+            .icon { width: 50px; height: 50px; font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -119,23 +136,20 @@
     <div class="gate-btn">INITIATE SIGNAL</div>
 </div>
 
-<div id="landing-stage" onclick="enterTerminal()">
+<div id="landing-stage">
     <iframe class="full-vid" 
-            id="landing-video"
-            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
+            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
             frameborder="0" allow="autoplay"></iframe>
-
-    <div class="abyss-btn">ENTER THE AETHER</div>
+    <div class="abyss-btn" onclick="enterTerminal()">ENTER THE AETHER</div>
 </div>
 
 <div id="main-terminal">
     <div id="bg-shield" onclick="closeAllWindows()"></div>
 
-    <iframe class="full-vid" id="main-video"
-            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
+    <iframe class="full-vid" 
+            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
             frameborder="0" style="opacity:0.35"></iframe>
 
-    <!-- Wednesday playlist (main screen only, 60% volume) -->
     <iframe id="main-music" style="display:none;" 
             src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1&playlist=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" 
             frameborder="0" allow="autoplay"></iframe>
@@ -146,85 +160,112 @@
         </video>
     </div>
 
-    <!-- Your holoframes here (same as before, just the opening sequence fixed) -->
-    <div id="win-aetheris" class="holo-window">
-        <!-- ... content ... -->
+    <!-- AETHERIS VISION -->
+    <div id="win-aetheris" class="holo-window active">
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">AETHERIS VISION<span class="minimize-btn" onclick="minimizeWin('aetheris')">-</span></div>
+            <span class="close" onclick="closeWin('aetheris')">&times;</span>
+            <div class="product-scroll">
+                <p>Hello, world. It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower, quietly reminding us that clean air is the battery we're all running out of. That "connect to charger" message isn't just clever—it's a warning. Air is life, and cities are suffocating.</p>
+
+                <p>Aetheris Units are the answer. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust, and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology—now ready to scale across the planet.</p>
+
+                <strong>Real-World Foundations</strong><br><br>
+
+                The Smog Free Tower (Daan Roosegaarde) — 7 meters tall, the first outdoor air purifier on Earth. Safe positive ionization captures ultra-fine particles at 30,000 m³/hour. Deployed in Beijing, Rotterdam, Kraków, Abu Dhabi. Turns pollution into diamonds—one ring equals 1,000 m³ cleaned. Poison becomes hope.<br><br>
+
+                Xi'an Smog Tower — over 100 meters tall. Solar-driven airflow through massive filters visibly reduces PM2.5 across kilometers.<br><br>
+
+                From India's 30-meter urban towers to emerging bio-integrated designs worldwide, the pattern is clear: clean-air domes work, and they scale.<br><br>
+
+                Aetheris Units carry this legacy forward—modular, powerful, built for cities. Fleets of breathing towers can reclaim the air we all share. This is not a dream. It's a mission. The world is ready. Let's give it breath.
+            </div>
+        </div>
     </div>
+
+    <!-- AETHERIS UNIT SPECS -->
     <div id="win-specs" class="holo-window">
-        <!-- ... content ... -->
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">AETHERIS UNIT SPECS<span class="minimize-btn" onclick="minimizeWin('specs')">-</span></div>
+            <span class="close" onclick="closeWin('specs')">&times;</span>
+            <div class="product-scroll">
+                <!-- Full specs text here – paste your latest version if needed -->
+                <p>Hello, world. These are the Aetheris Units—7-meter breathing towers...</p>
+                <!-- ... rest of specs ... -->
+            </div>
+        </div>
     </div>
+
+    <!-- REDWATER FARM BASE -->
     <div id="win-farmbuild" class="holo-window">
-        <!-- ... content ... -->
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">REDWATER FARM BASE<span class="minimize-btn" onclick="minimizeWin('farmbuild')">-</span></div>
+            <span class="close" onclick="closeWin('farmbuild')">&times;</span>
+            <div class="product-scroll">
+                <!-- Full farm+build text here -->
+                <p>Hello, world. The strategy is clear and powerful...</p>
+                <!-- ... rest of farm+build ... -->
+            </div>
+        </div>
     </div>
+
+    <!-- FACILITY SCHEMATICS -->
     <div id="win-schematics" class="holo-window">
-        <!-- ... content ... -->
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">FACILITY SCHEMATICS<span class="minimize-btn" onclick="minimizeWin('schematics')">-</span></div>
+            <span class="close" onclick="closeWin('schematics')">&times;</span>
+            <div class="product-scroll">
+                <!-- Full schematics text + links here -->
+                <p>Hello, world. These are the conceptual blueprints...</p>
+                <!-- ... rest of schematics ... -->
+                <div style="margin-top: 20px; text-align: center; font-size: 0.85rem;">
+                    <strong>Conceptual Schematics Links</strong><br>
+                    <a href="https://appliancefactoryparts.com" target="_blank" style="color:var(--nexus-blue);">Overall Tower Design</a> • 
+                    <a href="https://iqsdirectory.com" target="_blank" style="color:var(--nexus-blue);">Filtration Cross-Section</a> • 
+                    <a href="https://trionparts.com" target="_blank" style="color:var(--nexus-blue);">Exploded Assembly View</a> • 
+                    <a href="https://forum.projectvanlife.com" target="_blank" style="color:var(--nexus-blue);">Electrical & Power System</a> • 
+                    <a href="https://cadbull.com" target="_blank" style="color:var(--nexus-blue);">Structural Frame</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="hud-dock">
-        <div class="icon active" onclick="toggleWin('aetheris')">🌬️</div>
+        <div class="icon" onclick="toggleWin('aetheris')">🌬️</div>
         <div class="icon" onclick="toggleWin('specs')">📐</div>
         <div class="icon" onclick="toggleWin('farmbuild')">🌾</div>
         <div class="icon" onclick="toggleWin('schematics')">🏗️</div>
     </div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    let landingVideo;
-    let mainVideo;
-    let mainMusic;
-
-    function onYouTubeIframeAPIReady() {
-        landingVideo = new YT.Player('landing-video', {
-            events: { 'onReady': function(e) { e.target.mute(); } }
-        });
-
-        mainVideo = new YT.Player('main-video', {
-            events: {
-                'onReady': function(e) {
-                    e.target.mute(); // initial mute to allow autoplay
-                }
-            }
-        });
-
-        mainMusic = new YT.Player('main-music', {
-            events: {
-                'onReady': function(e) {
-                    e.target.setVolume(60);
-                }
-            }
-        });
-    }
-
     function initLanding() {
         document.getElementById('entry-gate').style.display = 'none';
         document.getElementById('landing-stage').style.display = 'flex';
-        if (landingVideo) {
-            landingVideo.unMute();
-            landingVideo.playVideo();
-        }
     }
 
     function enterTerminal() {
         document.getElementById('landing-stage').style.display = 'none';
         document.getElementById('main-terminal').style.display = 'block';
 
-        // Stop landing video & music
-        if (landingVideo) landingVideo.stopVideo();
+        // Start Wednesday playlist at 60% volume
+        document.getElementById('main-music').contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        setTimeout(() => {
+            document.getElementById('main-music').contentWindow.postMessage('{"event":"command","func":"setVolume","args":[60]}', '*');
+        }, 500);
 
-        // Start main video (unmute after transition)
-        if (mainVideo) {
-            mainVideo.playVideo();
-            setTimeout(() => mainVideo.unMute(), 500);
-        }
-
-        // Start Wednesday playlist
-        if (mainMusic) {
-            mainMusic.playVideo();
-            mainMusic.setVolume(60);
-        }
-
-        // Sequence holoframes
         toggleWin('aetheris');
         setTimeout(() => toggleWin('specs'), 8000);
         setTimeout(() => toggleWin('farmbuild'), 16000);
@@ -232,16 +273,25 @@
     }
 
     function toggleWin(id) {
-        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
-        document.getElementById('win-' + id)?.classList.add('active');
+        const win = document.getElementById('win-' + id);
+        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active', 'minimized'));
+        if (win) {
+            win.classList.add('active');
+        }
     }
 
     function minimizeWin(id) {
-        document.getElementById('win-' + id)?.classList.toggle('minimized');
+        const win = document.getElementById('win-' + id);
+        if (win) win.classList.toggle('minimized');
     }
 
     function closeWin(id) {
-        document.getElementById('win-' + id)?.classList.remove('active', 'minimized');
+        const win = document.getElementById('win-' + id);
+        if (win) win.classList.remove('active', 'minimized');
+    }
+
+    function closeAllWindows() {
+        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active', 'minimized'));
     }
 </script>
 </body>
