@@ -178,6 +178,7 @@
             <div class="holo-header">AETHERIS UNIT SPECS<span class="minimize-btn" onclick="minimizeWin('specs')">-</span></div>
             <span class="close" onclick="closeWin('specs')">&times;</span>
             <div class="product-scroll">
+                <!-- Full specs text here -->
                 <p>Hello, world. These are the Aetheris Units—7-meter breathing towers engineered to restore clean air in cities. Every specification here is production-ready, built on proven real-world systems and designed to scale across the planet.</p>
 
                 <strong>1. Overview</strong><br>
@@ -385,7 +386,7 @@
         document.getElementById('entry-gate').style.display = 'none';
         document.getElementById('landing-stage').style.display = 'flex';
 
-        // First real click → unmute landing video
+        // First click unmutes landing video
         if (landingVideo) {
             landingVideo.unMute();
             landingVideo.playVideo();
@@ -396,13 +397,12 @@
         document.getElementById('landing-stage').style.display = 'none';
         document.getElementById('main-terminal').style.display = 'block';
 
-        // Pause & stop landing video
+        // Pause landing video
         if (landingVideo) {
             landingVideo.pauseVideo();
-            setTimeout(() => landingVideo.stopVideo(), 1000);
         }
 
-        // Start main video after 1-second transition delay
+        // 1-second delay, then start main video unmuted
         setTimeout(() => {
             if (mainVideo) {
                 mainVideo.unMute();
