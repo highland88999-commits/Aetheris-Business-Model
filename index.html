@@ -54,7 +54,7 @@
             box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
             backdrop-filter: blur(20px); z-index: 200; display: none; 
             flex-direction: column; overflow: hidden; 
-            bottom: 81px; /* 80px dock + 1mm gap */
+            bottom: 81px;
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
         .holo-window.minimized { height: 60px !important; overflow: hidden; opacity: 0.7; bottom: 81px; }
@@ -63,6 +63,15 @@
         .holo-header { color: var(--emerald); text-shadow: var(--bloom-green); letter-spacing: 3px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; margin-bottom: 15px; }
         .product-scroll { overflow-y: auto; color: var(--nexus-blue); font-size: 0.9rem; line-height: 1.6; flex-grow: 1; }
         .close { cursor: pointer; color: #ff3366; font-size: 1.5rem; }
+
+        /* Embedded site iframe styling */
+        .embedded-site {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+        }
         
         #hud-dock { 
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
@@ -102,6 +111,14 @@
             <video class="oracle-mp4" autoplay loop muted playsinline>
                 <source src="https://raw.githubusercontent.com/highland88999-commits/The-Flying-Dutchman/main/hailuo_1768837219.mp4" type="video/mp4">
             </video>
+        </div>
+
+        <!-- TRACKING – now embeds the site directly -->
+        <div id="win-tracking" class="holo-window">
+            <div class="text-overlay" style="padding: 0;">
+                <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
+                <iframe class="embedded-site" src="https://olympus-aetheris.vercel.app/" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
 
         <!-- AETHERIS VISION -->
@@ -244,32 +261,154 @@
             </div>
         </div>
 
-        <!-- TRACKING (new holoframe) – positioned first in dock -->
-        <div id="win-tracking" class="holo-window">
+        <!-- FACILITY SCHEMATICS -->
+        <div id="win-schematics" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
+                <div class="holo-header">FACILITY SCHEMATICS <span class="close" onclick="closeWin('schematics')">×</span></div>
                 <div class="product-scroll">
-                    <p>Live Project Tracking & Deployment Dashboard</p>
-                    <p>Monitor real-time progress, milestones, deployment status, and key metrics for the Aetheris initiative.</p>
+                    <p>Conceptual blueprints for the 20,000 sq ft Aetheris production facility on 80-acre Redwater farm. Rectangular steel prefab (100 ft × 200 ft, 20–25 ft eave, clear-span) — winter-tough, expandable, ~5–10 acres developed, 70+ acres buffer/future growth.</p>
+
+                    <strong>1. Overall Site Plan (80-Acre Layout)</strong><br>
+                    Building positioned for Hwy 28 access, gravel driveway, parking/loading (~50 spots + truck bays), septic, well, stormwater swales/ponds, large farmland buffers. Setbacks ~30–50 m, tree lines preserved, solar tie-in space reserved.<br><br>
+
+                    <strong>2. Building Floor Plan</strong><br>
+                    Clear-span layout:<br>
+                    • Manufacturing/assembly bay — 60% (high bays, CNC/welding zones)<br>
+                    • Material storage & filter production — 20%<br>
+                    • Finished goods warehouse — 10%<br>
+                    • Offices, lunchroom, restrooms — 10%<br>
+                    • 2–4 loading docks + personnel entrances<br>
+                    Overhead crane rails, electrical panels, ventilation, fire separations marked.<br><br>
+
+                    <strong>3. Exterior Elevations</strong><br>
+                    Front/side/rear views:<br>
+                    • Insulated metal panels<br>
+                    • Large overhead doors<br>
+                    • Personnel doors<br>
+                    • Office windows<br>
+                    • Sloped roof (Alberta snow load pitch ~1:12)<br>
+                    Height: 25 ft eave, 30 ft peak. Minimalist, cost-effective.<br><br>
+
+                    <strong>4. Structural Cross-Section / Framing</strong><br>
+                    Steel skeleton:<br>
+                    • Primary rigid frames (I-beams/columns)<br>
+                    • Secondary purlins/girts<br>
+                    • Braced bays for wind/snow (Alberta Zone)<br>
+                    • Foundation piers/footings<br>
+                    • Roof/wall bracing<br>
+                    Clear-span up to 100 ft. CSA S16 steel, NBC-Alberta loads.<br><br>
+
+                    <strong>Submission Notes for Alberta</strong><br>
+                    • Development Permit: Site plan, rural fit, low traffic/env impact<br>
+                    • Building Permit: Floor plan, elevations, structural, energy code<br>
+                    • Electrical/Mechanical: Separate certified drawings<br>
+                    • Fire & Safety: Egress, sprinklers, fire lanes<br>
+                    • Environmental: Stormwater plan for fields/waterways<br><br>
+
+                    <p>Professional stamped drawings budget: $20,000–$60,000 CAD (Edmonton/Sturgeon engineers). This is the forge where Aetheris Units are born. The world needs clean air. We're building the factory that delivers it.</p>
+
+                    <div style="margin-top: 20px; text-align: center; font-size: 0.85rem;">
+                        <strong>Conceptual Schematics Links</strong><br>
+                        <a href="https://appliancefactoryparts.com" target="_blank" style="color:var(--nexus-blue);">Overall Tower Design</a> • 
+                        <a href="https://iqsdirectory.com" target="_blank" style="color:var(--nexus-blue);">Filtration Cross-Section</a> • 
+                        <a href="https://trionparts.com" target="_blank" style="color:var(--nexus-blue);">Exploded Assembly View</a> • 
+                        <a href="https://forum.projectvanlife.com" target="_blank" style="color:var(--nexus-blue);">Electrical & Power System</a> • 
+                        <a href="https://cadbull.com" target="_blank" style="color:var(--nexus-blue);">Structural Frame</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACHINERY LIST -->
+        <div id="win-machinery" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">MACHINERY LIST <span class="close" onclick="closeWin('machinery')">×</span></div>
+                <div class="product-scroll">
+                    <p>Core machinery required for Aetheris Unit production (initial 20,000 sq ft facility, 50–100 units/year capacity). Estimated costs in CAD (2025–2026 pricing, subject to quotes).</p>
+
+                    <strong>CNC & Fabrication</strong><br>
+                    - 5-axis CNC Mill (Haas UMC-750 or equivalent): $250,000–$400,000<br>
+                    - CNC Lathe (Doosan Puma 2600): $150,000–$250,000<br>
+                    - Fiber Laser Cutter (6kW, 2m×4m bed): $200,000–$350,000<br>
+                    - Plasma Cutter (for thick SS/aluminum): $30,000–$60,000<br><br>
+
+                    <strong>Welding & Assembly</strong><br>
+                    - TIG Welder (Miller Dynasty 400): $15,000–$25,000 (×4 stations)<br>
+                    - Robotic Welding Arm (Fanuc or ABB, 6-axis): $120,000–$200,000<br>
+                    - Jib Cranes & Hoists (2-ton, 360°): $8,000–$15,000 each (×6)<br><br>
+
+                    <strong>Filter Production</strong><br>
+                    - Pleating Machine (for HEPA media): $80,000–$150,000<br>
+                    - Hot-Melt Glue Applicator: $40,000–$80,000<br>
+                    - Filter Testing Rig (DOP/PAO aerosol generator): $50,000–$100,000<br><br>
+
+                    <strong>Painting & Finishing</strong><br>
+                    - Powder Coating Line (oven + booth): $100,000–$200,000<br>
+                    - Sandblasting Cabinet (large): $15,000–$30,000<br><br>
+
+                    <strong>General Shop</strong><br>
+                    - Forklift (3-ton electric): $40,000–$60,000<br>
+                    - Workbenches & Tool Storage: $20,000–$40,000<br>
+                    - Air Compressor (50 HP): $15,000–$25,000<br>
+                    - Ventilation & Dust Collection: $50,000–$100,000<br><br>
+
+                    <strong>Total Machinery Estimate</strong><br>
+                    $1,000,000 – $2,000,000 CAD (mid-range ~$1.5M)<br>
                     <br>
-                    <p><strong>Current Status:</strong> Pre-prototype phase — site selection, rezoning prep, and engineering drawings in progress.</p>
-                    <br>
-                    <p><strong>Access Full Dashboard:</strong></p>
-                    <p style="text-align: center; margin: 40px 0;">
-                        <a href="https://olympus-aetheris.vercel.app/" target="_blank" style="color: var(--emerald); font-size: 1.2rem; text-decoration: none; border: 1px solid var(--emerald); padding: 15px 30px; border-radius: 12px; background: rgba(0, 255, 136, 0.1); transition: all 0.3s;">
-                            Open Tracking Dashboard →
-                        </a>
-                    </p>
-                    <p>The dashboard includes:</p>
-                    <ul>
-                        <li>Timeline & milestones</li>
-                        <li>Budget tracking</li>
-                        <li>Team updates</li>
-                        <li>Prototype progress photos</li>
-                        <li>Deployment map (future units)</li>
-                        <li>Live air quality data feed (when units are online)</li>
-                    </ul>
-                    <p>Bookmark or share: <strong>https://olympus-aetheris.vercel.app/</strong></p>
+                    <p>Next steps: Get quotes from Haas, Doosan, Miller, Fanuc, local Alberta suppliers. Lease options available for cash flow. Prioritize CNC/laser first for prototyping.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUSINESSES & SUPPLIERS -->
+        <div id="win-suppliers" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">BUSINESSES & SUPPLIERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
+                <div class="product-scroll">
+                    <p>Key businesses, material suppliers, and partners needed for Aetheris production. Emails and websites are clickable (mailto: for emails, new tab for sites). All are real companies — reach out with your project brief.</p>
+
+                    <strong>Filtration Media & Components</strong><br>
+                    - <strong>3M Filtration</strong> — HEPA/electrostatic media, ionizer tech<br>
+                      Email: <a href="mailto:filtration@mmm.com">filtration@mmm.com</a><br>
+                      Website: <a href="https://www.3m.com/3M/en_US/filtration-us/" target="_blank">3m.com/filtration</a><br><br>
+
+                    - <strong>Cummins Filtration (Fleetguard)</strong> — heavy-duty air filters, activated carbon<br>
+                      Email: <a href="mailto:info@cumminsfiltration.com">info@cumminsfiltration.com</a><br>
+                      Website: <a href="https://www.cumminsfiltration.com/" target="_blank">cumminsfiltration.com</a><br><br>
+
+                    <strong>Steel & Aluminum Suppliers</strong><br>
+                    - <strong>Russel Metals (Alberta)</strong> — perforated stainless, aluminum sheet<br>
+                      Email: <a href="mailto:info@russelmetals.com">info@russelmetals.com</a><br>
+                      Website: <a href="https://www.russelmetals.com/" target="_blank">russelmetals.com</a><br><br>
+
+                    - <strong>Earle M. Jorgensen Canada</strong> — structural aluminum & stainless<br>
+                      Email: <a href="mailto:info@emjmetals.com">info@emjmetals.com</a><br>
+                      Website: <a href="https://www.emjmetals.com/" target="_blank">emjmetals.com</a><br><br>
+
+                    <strong>Electronics & Fans</strong><br>
+                    - <strong>ebm-papst Canada</strong> — EC fans, low-noise blowers<br>
+                      Email: <a href="mailto:info@ca.ebmpapst.com">info@ca.ebmpapst.com</a><br>
+                      Website: <a href="https://www.ebmpapst.com/ca/en/" target="_blank">ebmpapst.com/ca</a><br><br>
+
+                    - <strong>RS Components / Allied Electronics</strong> — sensors, UL-listed components<br>
+                      Email: <a href="mailto:canada@rs-online.com">canada@rs-online.com</a><br>
+                      Website: <a href="https://ca.rs-online.com/" target="_blank">ca.rs-online.com</a><br><br>
+
+                    <strong>Engineering & Certification</strong><br>
+                    - <strong>Stantec (Edmonton office)</strong> — environmental/stormwater reports, rezoning support<br>
+                      Email: <a href="mailto:info@stantec.com">info@stantec.com</a><br>
+                      Website: <a href="https://www.stantec.com/en" target="_blank">stantec.com</a><br><br>
+
+                    - <strong>CSA Group (Alberta)</strong> — standards compliance, testing<br>
+                      Email: <a href="mailto:client.services@csagroup.org">client.services@csagroup.org</a><br>
+                      Website: <a href="https://www.csagroup.org/" target="_blank">csagroup.org</a><br><br>
+
+                    <strong>Other Strategic Partners</strong><br>
+                    - <strong>Daan Roosegaarde Studio</strong> — inspiration/possible collab on art-from-pollution<br>
+                      Email: <a href="mailto:info@studio-roosegaarde.net">info@studio-roosegaarde.net</a><br>
+                      Website: <a href="https://www.studioroosegaarde.net/" target="_blank">studioroosegaarde.net</a><br><br>
+
+                    <p>Start with 3M and Russel Metals — they’re local to Canada and can fast-track samples. Use LinkedIn for direct outreach. Track responses in the dashboard.</p>
                 </div>
             </div>
         </div>
@@ -279,6 +418,9 @@
             <div id="ico-aetheris" class="icon" onclick="toggleWin('aetheris')">🌬️</div>
             <div id="ico-specs" class="icon" onclick="toggleWin('specs')">📐</div>
             <div id="ico-farmbuild" class="icon" onclick="toggleWin('farmbuild')">🌾</div>
+            <div id="ico-schematics" class="icon" onclick="toggleWin('schematics')">🏗️</div>
+            <div id="ico-machinery" class="icon" onclick="toggleWin('machinery')">🛠️</div>
+            <div id="ico-suppliers" class="icon" onclick="toggleWin('suppliers')">🤝</div>
         </div>
     </div>
 
@@ -344,6 +486,9 @@
                 setTimeout(() => toggleWin('aetheris'), 8000);
                 setTimeout(() => toggleWin('specs'), 16000);
                 setTimeout(() => toggleWin('farmbuild'), 24000);
+                setTimeout(() => toggleWin('schematics'), 32000);
+                setTimeout(() => toggleWin('machinery'), 40000);
+                setTimeout(() => toggleWin('suppliers'), 48000);
             }, 1000);
         }
 
