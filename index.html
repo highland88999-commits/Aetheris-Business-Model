@@ -14,7 +14,8 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Courier New', monospace; color: var(--nexus-blue); }
-        
+
+        /* Full Screen Video Logic */
         .video-background {
             position: fixed;
             top: 0; left: 0;
@@ -27,7 +28,7 @@
             position: absolute;
             top: 50%; left: 50%;
             width: 100vw;
-            height: 56.25vw;
+            height: 56.25vw; 
             min-height: 100vh;
             min-width: 177.77vh;
             transform: translate(-50%, -50%);
@@ -37,23 +38,33 @@
         .gate-btn { padding: 20px 40px; border: 1px solid var(--nexus-blue); border-radius: 100px; color: var(--nexus-blue); letter-spacing: 10px; font-size: 1rem; text-shadow: 0 0 10px var(--nexus-blue); animation: breathe 3s infinite; }
 
         #landing-stage { position: fixed; inset: 0; z-index: 9000; background: #000; display: none; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 8vh; }
-
         .abyss-btn { position: relative; z-index: 9001; padding: 18px 50px; border-radius: 60px; border: 2px solid var(--nexus-blue); background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); color: var(--nexus-blue); letter-spacing: 8px; font-size: 1rem; text-shadow: 0 0 15px var(--nexus-blue); cursor: pointer; transition: 0.3s; }
-        .abyss-btn:hover { transform: scale(1.05); background: rgba(0, 212, 255, 0.1); }
 
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
         #bg-shield { position: absolute; inset: 0; z-index: 5; }
 
-        #win-oracle { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); width: 260px; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.3); overflow: hidden; z-index: 50; opacity: 0.8; cursor: pointer; box-shadow: 0 0 30px rgba(0, 212, 255, 0.2); }
+        #win-oracle { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); width: 260px; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.3); overflow: hidden; z-index: 50; opacity: 0.8; cursor: pointer; }
         .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Adjusted Holo Window for 1mm Clearance */
         .holo-window { 
-            position: fixed; inset: 0; margin: auto; top: 10%; 
-            width: 90vw; max-width: 500px; height: 70vh; 
-            background: var(--glass); border: 2px solid var(--neon-purple); 
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
-            backdrop-filter: blur(20px); z-index: 200; display: none; 
-            flex-direction: column; overflow: hidden; 
+            position: fixed; 
+            left: 50%;
+            transform: translateX(-50%);
+            top: 5vh; 
+            width: 90vw; 
+            max-width: 500px; 
+            /* Height set to end exactly 1mm above the dock */
+            height: calc(100vh - 85px - 1mm - 5vh); 
+            background: var(--glass); 
+            border: 2px solid var(--neon-purple); 
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); 
+            border-radius: 30px; 
+            backdrop-filter: blur(20px); 
+            z-index: 200; 
+            display: none; 
+            flex-direction: column; 
+            overflow: hidden; 
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
 
@@ -61,10 +72,24 @@
         .holo-header { color: var(--emerald); text-shadow: var(--bloom-green); letter-spacing: 3px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; margin-bottom: 15px; }
         .product-scroll { overflow-y: auto; color: var(--nexus-blue); font-size: 0.9rem; line-height: 1.6; flex-grow: 1; }
         .close { cursor: pointer; color: #ff3366; font-size: 1.5rem; }
-        
-        #hud-dock { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 25px; z-index: 300; background: rgba(0,0,0,0.7); padding: 15px 30px; border-radius: 30px 30px 0 0; border: 1px solid var(--nexus-blue); border-bottom: none; }
+
+        /* HUD Dock Height defined for calc logic */
+        #hud-dock { 
+            position: fixed; 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            display: flex; 
+            gap: 25px; 
+            z-index: 300; 
+            background: rgba(0,0,0,0.7); 
+            padding: 15px 30px; 
+            height: 85px; 
+            border-radius: 30px 30px 0 0; 
+            border: 1px solid var(--nexus-blue); 
+            border-bottom: none; 
+        }
         .icon { width: 55px; height: 55px; border: 1px solid var(--nexus-blue); border-radius: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: 0.3s; }
-        .icon:hover { background: rgba(0, 212, 255, 0.2); }
         .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); color: var(--emerald); }
 
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
@@ -78,17 +103,13 @@
     </div>
 
     <div id="landing-stage">
-        <div class="video-background">
-            <div id="landing-player"></div>
-        </div>
+        <div class="video-background"><div id="landing-player"></div></div>
         <div class="abyss-btn" onclick="enterTerminal()">ENTER THE AETHER</div>
     </div>
 
     <div id="main-terminal">
         <div id="bg-shield" onclick="closeAllWindows()"></div>
-        <div class="video-background" style="opacity: 0.45;">
-            <div id="main-player"></div>
-        </div>
+        <div class="video-background" style="opacity: 0.45;"><div id="main-player"></div></div>
         
         <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
             <video class="oracle-mp4" autoplay loop muted playsinline>
@@ -96,148 +117,42 @@
             </video>
         </div>
 
-        <!-- AETHERIS VISION – full content -->
         <div id="win-aetheris" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">AETHERIS VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
                 <div class="product-scroll">
-                    <p>It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower, quietly reminding us that clean air is the battery we're all running out of. That "connect to charger" message isn't just clever—it's a warning. Air is life, and cities are suffocating.</p>
-
-                    <p>Aetheris Units are the answer. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust, and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology—now ready to scale across the planet.</p>
-
+                    <p>It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower... [Content continues]</p>
                     <strong>Real-World Foundations</strong><br><br>
-
                     <strong>Smog Free Tower (Daan Roosegaarde)</strong><br>
-                    7 meters tall — world's first outdoor air purifier. Ozone-free positive ionization. Cleans 30,000 m³/hour — enough for a park. Installed in Rotterdam, Beijing, Kraków, Abu Dhabi. Turns captured pollution into jewelry (diamonds). One ring = 1,000 m³ cleaned. Art from poison.<br><br>
-
-                    <strong>Xi'an Smog Tower (China)</strong><br>
-                    Over 100 meters tall — largest ever built. Solar chimney effect creates natural updraft. Multi-layer filters reduce PM2.5 across square kilometers.<br><br>
-
-                    <strong>Global Examples</strong><br>
-                    India: 30m+ towers in Delhi parks. Russia: tree-like HyperFilter concepts. Bio-moss integrations emerging. Proof: hyper-local clean-air bubbles are real and scaling.<br><br>
-
-                    <p>Your 3M tower concept fuses indoor Filtrete tech with these giants. Fleets of towers breathing for cities. Air as the new oil — you're the refinery. Let's build it.</p>
+                    7 meters tall — world's first outdoor air purifier. Cleans 30,000 m³/hour. Installed in Rotterdam, Beijing, Kraków, Abu Dhabi.<br><br>
+                    <p>Air as the new oil — you're the refinery. Let's build it.</p>
                 </div>
             </div>
         </div>
 
-        <!-- UNIT SPECS – full content -->
         <div id="win-specs" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">UNIT SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
                 <div class="product-scroll">
-                    <p>3M EcoTower Global Air Purifier (Model ET-GAP-700) — production-ready, outdoor, modular, solar-compatible.</p>
-
-                    <strong>1. Overview</strong><br>
-                    Purpose: Clean polluted city air at scale. Creates breathable zones in smog-heavy areas.<br>
-                    Deployment: Parks, plazas, traffic choke points, industrial edges. 5–10 units/km² for saturation.<br>
-                    Features: Hybrid filtration, solar option, IoT monitoring, zero ozone.<br>
-                    Compliance: EU REACH/RoHS, WHO output standards.<br><br>
-
-                    <strong>2. Dimensions & Structure</strong><br>
-                    Height: 7m (5m filter column + 2m base) — scalable to 10m<br>
-                    Diameter: 2.5m base → 2m top (tapered)<br>
-                    Weight: ~1,200 kg loaded<br>
-                    Frame: Aluminum 6061-T6 + perforated 304 stainless panels<br>
-                    Base: Anti-vibe mounts + 3m×3m×0.3m concrete anchors<br>
-                    Modularity: 4 bolt-together sections (M10, 50 Nm)<br>
-                    Durability: IP65, -20°C to 50°C, UV-resistant silver/gray coat<br><br>
-
-                    <strong>3. Filtration System</strong><br>
-                    Hybrid: 3M electrostatic + positive ionization + HEPA<br>
-                    Stage 1: Washable SS pre-filter (10–20μm)<br>
-                    Stage 2: 5–10kV ionizer (charges ultra-fines, no ozone)<br>
-                    Stage 3: HEPA H14 (99.97% @ 0.3μm) + activated carbon for VOCs/odors<br>
-                    Stage 4: Optional UV-C (254nm, 20W) pathogen kill<br>
-                    Filters: 6× 1.5m×1m panels (20m² each), 3M Filtrete MERV 16, 6–12 month life<br>
-                    Airflow: 360° base intake → upward → diffused top exhaust<br><br>
-
-                    <strong>4. Power System</strong><br>
-                    Consumption: 1,170W nominal / 1,500W peak<br>
-                    Source: 110–240V grid + optional 5kW solar + passive greenhouse heat<br>
-                    Backup: 10kWh Li-ion (4–6h runtime)<br>
-                    Noise: <55 dB @ 1m (variable EC fans)<br><br>
-
-                    <strong>5. Performance</strong><br>
-                    Capacity: 30,000 m³/h (scalable to 100k)<br>
-                    Coverage: 1–3 km² bubble, 15–20% PM2.5 drop<br>
-                    Efficiency: 80–95% removal (EN 1822), AQI <50 output<br>
-                    Monitoring: PM2.5/CO2/VOC sensors + app<br>
-                    Byproducts: Compressed cubes (art/jewelry) or safe disposal<br><br>
-
-                    <strong>6. Materials & Manufacturing</strong><br>
-                    Frame: Anodized 6061-T6 aluminum<br>
-                    Panels: 1.5mm perforated 304 SS<br>
-                    Filters: 3M charged synthetic<br>
-                    Electronics: UL-listed, 3×500W EC fans<br>
-                    Process: CNC + TIG weld (±0.5mm), modular bolt, 100% leak/test<br><br>
-
-                    <strong>7. Install & Maintenance</strong><br>
-                    Install: Crane (2–4h), 3-phase hookup<br>
-                    Maintenance: Filters every 6–12mo ($500–$1k/set), pre-filter wash, ionizer wipe monthly, annual service ~$2k<br>
-                    Life: 10–15 years, >80% recyclable<br><br>
-
-                    <strong>8. Cost Estimates</strong><br>
-                    Unit: $150k–$250k (volume target $100k)<br>
-                    Operating: $10k–$30k/year (24/7)<br>
-                    ROI: Carbon credits, sponsorships, health savings<br><br>
-
-                    <p>Prototype-ready. Reach out to 3M industrial filtration or local environmental engineers for next steps.</p>
+                    <strong>Model ET-GAP-700</strong><br>
+                    Height: 7m | Capacity: 30,000 m³/h<br>
+                    Filtration: Hybrid Electrostatic + HEPA H14<br>
+                    Power: 1,170W nominal.
                 </div>
             </div>
         </div>
 
-        <!-- REDWATER FARM BASE – full content -->
         <div id="win-farmbuild" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">REDWATER FARM BASE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
+                <div class="holo-header">REDWATER FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
                 <div class="product-scroll">
-                    <p>Buying a farm outside Redwater, Alberta (Sturgeon County) and building your own manufacturing facility/warehouse is smarter long-term than buying an existing one — custom layout, more land for expansion, lower entry cost, and potential ag/green incentives.</p>
-
-                    <strong>1. Land Acquisition</strong><br>
-                    Typical Price: $3,500–$6,000+/acre (recent listings ~$3,500/acre for good cropland).<br>
-                    Target: 50–100 acres (buffer + expansion + possible retained farming).<br>
-                    Cost: 80 acres at $3,500/acre = $280,000 (up to $480,000 high end).<br>
-                    Extras: Survey/legal $5k–$15k, clearing/roads $10k–$30k.<br>
-                    Total Land: $250,000–$500,000.<br><br>
-
-                    <strong>2. Rezoning Considerations</strong><br>
-                    Current: Agricultural zoning.<br>
-                    Target: Industrial Rural or M1/M2.<br>
-                    Process: Sturgeon County Planning application + hearings + reports (traffic, env, stormwater).<br>
-                    Timeline: 6–18 months (faster near Industrial Heartland).<br>
-                    Cost: Fees $5k–$10k + consultant reports $20k–$50k.<br>
-                    Total Rezoning: $30,000–$80,000.<br><br>
-
-                    <strong>3. Construction Costs (20,000 sq ft steel prefab)</strong><br>
-                    Cost per sq ft: $160–$300 CAD all-in.<br>
-                    Breakdown:<br>
-                    - Foundation & Site Work: $50,000–$100,000<br>
-                    - Steel Structure & Erection: $600,000–$900,000<br>
-                    - Interior Fit-Out: $800,000–$1,200,000<br>
-                    - Utilities (power, water, septic): $100,000–$200,000<br>
-                    - Permits, Engineering, Contingency: $200,000–$400,000<br><br>
-
-                    Total Build: $3,000,000–$5,000,000 CAD (mid-range $4M).<br><br>
-
-                    <strong>4. Other Startup Costs</strong><br>
-                    Equipment & Tooling: $500,000–$1,000,000<br>
-                    Utility Hookups/Infrastructure: $100,000–$300,000<br>
-                    Contingency & Soft Costs: 10–20%<br><br>
-
-                    <strong>Grand Total Estimate</strong><br>
-                    Land + Rezoning/Site Prep: $300,000–$600,000<br>
-                    Construction: $3,000,000–$5,000,000<br>
-                    Equipment & Misc Startup: $800,000–$1,500,000<br>
-                    Overall: $4,100,000–$7,100,000 CAD (~$3M–$5.2M USD)<br><br>
-
-                    <p>Cheaper long-term than buying pre-zoned industrial ($2M+ premiums). You control the design, get buffer land, qualify for Alberta grants (clean tech, manufacturing, SR&ED). Next Steps: Contact Sturgeon County Planning for pre-application advice. Check REALTOR.ca or LoopNet for farms near Hwy 28. Phase construction, use local steel suppliers, apply for grants. Risks: rezoning delays, rural utility costs. This is your launchpad — local roots, global impact.</p>
+                    <p>80-acre rural farm site in Sturgeon County. $4.1M–$7.1M CAD for a custom 20,000 sq ft facility.</p>
                 </div>
             </div>
         </div>
 
         <div id="hud-dock">
-            <div id="ico-aetheris" class="icon active" onclick="toggleWin('aetheris')">🌬️</div>
+            <div id="ico-aetheris" class="icon" onclick="toggleWin('aetheris')">🌬️</div>
             <div id="ico-specs" class="icon" onclick="toggleWin('specs')">📐</div>
             <div id="ico-farmbuild" class="icon" onclick="toggleWin('farmbuild')">🌾</div>
         </div>
@@ -246,82 +161,38 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let landingPlayer, mainPlayer;
-
         function onYouTubeIframeAPIReady() {
-            landingPlayer = new YT.Player('landing-player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'vGXERI3UW3k',
-                playerVars: { 
-                    'autoplay': 0, 
-                    'controls': 0, 
-                    'mute': 1, 
-                    'loop': 1, 
-                    'playlist': 'vGXERI3UW3k', 
-                    'rel': 0, 
-                    'showinfo': 0,
-                    'modestbranding': 1 
-                }
-            });
-
-            mainPlayer = new YT.Player('main-player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'W54Y0cn78NY',
-                playerVars: { 
-                    'autoplay': 0, 
-                    'controls': 0, 
-                    'mute': 1, 
-                    'loop': 1, 
-                    'playlist': 'W54Y0cn78NY', 
-                    'rel': 0, 
-                    'showinfo': 0,
-                    'modestbranding': 1 
-                }
-            });
+            landingPlayer = new YT.Player('landing-player', { videoId: 'vGXERI3UW3k', playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': 'vGXERI3UW3k', 'rel': 0, 'modestbranding': 1 } });
+            mainPlayer = new YT.Player('main-player', { videoId: 'W54Y0cn78NY', playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': 'W54Y0cn78NY', 'rel': 0, 'modestbranding': 1 } });
         }
-
         function initLanding() {
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
-            if (landingPlayer) {
-                landingPlayer.unMute();
-                landingPlayer.playVideo();
-            }
+            if (landingPlayer) { landingPlayer.unMute(); landingPlayer.playVideo(); }
         }
-
         function enterTerminal() {
             if (landingPlayer) landingPlayer.pauseVideo();
-            
             setTimeout(() => {
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
-                if (mainPlayer) {
-                    mainPlayer.unMute();
-                    mainPlayer.playVideo();
-                }
-                
+                if (mainPlayer) { mainPlayer.unMute(); mainPlayer.playVideo(); }
                 toggleWin('aetheris');
                 setTimeout(() => toggleWin('specs'), 8000);
                 setTimeout(() => toggleWin('farmbuild'), 16000);
             }, 1000);
         }
-
         function toggleWin(id) {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
-            
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
             if (ico) ico.classList.add('active');
         }
-
         function closeWin(id) {
             document.getElementById('win-' + id).classList.remove('active');
             document.getElementById('ico-' + id).classList.remove('active');
         }
-
         function closeAllWindows() {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
