@@ -3,259 +3,147 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Olympus | Aetheris Terminal</title>
+    <title>Olympus | Aetheris Forge Terminal</title>
     <style>
         :root {
             --nexus-blue: #00d4ff;
             --neon-purple: #bc13fe;
             --emerald: #00ff88;
             --bloom-green: 0 0 15px var(--emerald), 0 0 30px rgba(0, 255, 136, 0.5);
-            --glass: rgba(0, 10, 15, 0.35);
+            --glass: rgba(0, 10, 15, 0.40);
         }
-        
-        /* SEARCH & DICTIONARY PREVENTION */
-        * { 
-            margin:0; padding:0; box-sizing:border-box; 
-            -webkit-user-select: none; 
-            -webkit-touch-callout: none; 
-            user-select: none; 
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-user-select: none; user-select: none; }
         body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Courier New', monospace; color: var(--nexus-blue); }
-
-        .video-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .video-background iframe {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 100vw; height: 56.25vw;
-            min-height: 100vh; min-width: 177.77vh;
-            transform: translate(-50%, -50%);
-        }
-
+        .video-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .video-background iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50%, -50%); }
         #entry-gate { position: fixed; inset: 0; z-index: 9999; background: #000; display: flex; justify-content: center; align-items: center; cursor: pointer; }
         .gate-btn { padding: 20px 40px; border: 1px solid var(--nexus-blue); border-radius: 100px; color: var(--nexus-blue); letter-spacing: 10px; font-size: 1rem; text-shadow: 0 0 10px var(--nexus-blue); animation: breathe 3s infinite; }
-
-        #landing-stage { position: fixed; inset: 0; z-index: 9000; background: #000; display: none; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 8vh; }
-        .abyss-btn { position: relative; z-index: 9001; padding: 18px 50px; border-radius: 60px; border: 2px solid var(--nexus-blue); background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); color: var(--nexus-blue); letter-spacing: 8px; font-size: 1rem; text-shadow: 0 0 15px var(--nexus-blue); cursor: pointer; }
-
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
         #bg-shield { position: absolute; inset: 0; z-index: 5; }
-
-        #win-oracle { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 240px; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.3); overflow: hidden; z-index: 50; opacity: 0.8; cursor: pointer; }
-        .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; }
-
         .holo-window { 
             position: fixed; left: 50%; transform: translateX(-50%); top: 5vh; 
-            width: 92vw; max-width: 500px; height: calc(100vh - 80px - 1mm - 5vh); 
+            width: 92vw; max-width: 550px; height: calc(100vh - 120px); 
             background: var(--glass); border: 2px solid var(--neon-purple); 
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
-            backdrop-filter: blur(20px); z-index: 200; display: none; flex-direction: column; overflow: hidden; 
+            box-shadow: 0 0 25px rgba(188, 19, 254, 0.4); border-radius: 30px; 
+            backdrop-filter: blur(25px); z-index: 200; display: none; flex-direction: column; 
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
-
-        .text-overlay { padding: 25px; display: flex; flex-direction: column; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 40%, rgba(0,0,0,0.9) 100%); }
-        .holo-header { color: var(--emerald); text-shadow: var(--bloom-green); letter-spacing: 3px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; margin-bottom: 15px; }
-        .product-scroll { overflow-y: auto; color: var(--nexus-blue); font-size: 0.9rem; line-height: 1.6; flex-grow: 1; pointer-events: auto; }
-        .close { cursor: pointer; color: #ff3366; font-size: 1.5rem; }
-        
-        #hud-dock { 
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
-            display: flex; gap: 15px; z-index: 300; background: rgba(0,0,0,0.8); 
-            padding: 12px 20px; border-radius: 25px 25px 0 0; border: 1px solid var(--nexus-blue); 
-            border-bottom: none; height: 80px; width: auto; max-width: 95vw;
-            overflow-x: auto; -webkit-overflow-scrolling: touch;
-        }
-        #hud-dock::-webkit-scrollbar { display: none; }
-
-        .icon { width: 50px; height: 50px; border: 1px solid var(--nexus-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem; flex-shrink: 0; }
-        .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); color: var(--emerald); background: rgba(0, 255, 136, 0.1); }
-
-        iframe { width: 100%; height: 100%; border: none; background: rgba(0,0,0,0.2); border-radius: 10px; pointer-events: auto; }
-
+        .text-overlay { padding: 25px; display: flex; flex-direction: column; height: 100%; overflow-y: auto; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 40%, rgba(0,0,0,0.95) 100%); }
+        .holo-header { color: var(--emerald); text-shadow: var(--bloom-green); letter-spacing: 2px; font-weight: bold; border-bottom: 1px solid rgba(0, 255, 136, 0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .close { cursor: pointer; color: #ff3366; }
+        .data-block { margin-bottom: 20px; border-left: 2px solid var(--nexus-blue); padding-left: 15px; }
+        .data-label { font-size: 0.75rem; color: var(--neon-purple); text-transform: uppercase; }
+        .data-value { font-size: 0.9rem; color: #fff; }
+        #hud-dock { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 300; background: rgba(0,0,0,0.85); padding: 15px 25px; border-radius: 30px 30px 0 0; border: 1px solid var(--nexus-blue); height: 90px; }
+        .icon { width: 55px; height: 55px; border: 1px solid var(--nexus-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: 0.2s; }
+        .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); background: rgba(0, 255, 136, 0.15); }
+        iframe { width: 100%; height: 100%; border: none; border-radius: 15px; }
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95) translateX(-50%) translateY(10px); } to { opacity: 1; transform: scale(1) translateX(-50%) translateY(0); } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9) translateX(-55%); } to { opacity: 1; transform: scale(1) translateX(-50%); } }
     </style>
 </head>
 <body>
-
-    <div id="entry-gate" onclick="initLanding()">
-        <div class="gate-btn">INITIATE SIGNAL</div>
-    </div>
-
-    <div id="landing-stage">
-        <div class="video-background"><div id="landing-player"></div></div>
-        <div class="abyss-btn" onclick="enterTerminal()">ENTER THE AETHER</div>
-    </div>
-
+    <div id="entry-gate" onclick="initTerminal()"><div class="gate-btn">OPEN FORGE</div></div>
     <div id="main-terminal">
         <div id="bg-shield" onclick="closeAllWindows()"></div>
-        <div class="video-background" style="opacity: 0.45;"><div id="main-player"></div></div>
-        
-        <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
-            <video class="oracle-mp4" autoplay loop muted playsinline>
-                <source src="https://raw.githubusercontent.com/highland88999-commits/The-Flying-Dutchman/main/hailuo_1768837219.mp4" type="video/mp4">
-            </video>
-        </div>
+        <div class="video-background"><div id="main-player"></div></div>
 
         <div id="win-tracking" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
-                <div class="product-scroll"><iframe src="https://olympus-aetheris.vercel.app/"></iframe></div>
-            </div>
-        </div>
-
-        <div id="win-aetheris" class="holo-window">
-            <div class="text-overlay">
-                <div class="holo-header">VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
-                <div class="product-scroll">
-                    <p>It began with a single image: a sleek 3M-branded cylindrical tower. Air is life, and cities are suffocating. Aetheris Units are the answer.</p>
-                    <p>Towering outdoor purifiers that inhale smog and exhale purified air, creating breathable sanctuaries in urban choke zones. Inspired by Daan Roosegaarde's Smog Free Towers cleaning 30,000 m³/hour.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="win-specs" class="holo-window">
-            <div class="text-overlay">
-                <div class="holo-header">SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
-                <div class="product-scroll">
-                    <strong>Model ET-GAP-700</strong><br>
-                    - Height: 7m | Weight: ~1,200kg<br>
-                    - Frame: Aluminum 6061-T6 + 304 Stainless Panels<br>
-                    - Filtration: 3M Electrostatic + HEPA H14 + UV-C<br>
-                    - Capacity: 30,000 m³/h output<br>
-                    - Power: 1,170W nominal (Solar Compatible)
-                </div>
+                <div class="holo-header">SYS: TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
+                <iframe src="https://olympus-aetheris.vercel.app/"></iframe>
             </div>
         </div>
 
         <div id="win-farmbuild" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
-                <div class="product-scroll">
-                    <strong>Redwater Farm Base (Sturgeon County)</strong><br>
-                    - Land: 80 Acres at ~$3,500/acre<br>
-                    - Build: 20,000 sq ft Steel Prefab<br>
-                    - Cost Breakdown: Land ($280k) + Build ($4M) + Equipment ($1.5M)<br>
-                    - Total Project: $4.1M – $7.1M CAD
+                <div class="holo-header">SITE: REDWATER BASE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
+                <div class="data-block">
+                    <div class="data-label">Zoning Status</div>
+                    <div class="data-value">District: Redistricting to I2 (Local Industrial) required. Sturgeon County Bylaw 1385/17 compliance.</div>
+                </div>
+                <div class="data-block">
+                    <div class="data-label">Hydrology & Drainage</div>
+                    <div class="data-value">Mandatory 32,000 m³ Stormwater Detention Pond required for 80-acre runoff management.</div>
+                </div>
+                <div class="data-block">
+                    <div class="data-label">Heartland Advantage</div>
+                    <div class="data-value">Access to High Load Corridor via Hwy 28. Direct proximity to NWR & Nutrien utilities.</div>
                 </div>
             </div>
         </div>
 
         <div id="win-schematics" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">PLANS <span class="close" onclick="closeWin('schematics')">×</span></div>
-                <div class="product-scroll">
-                    <strong>100ft x 200ft Facility Layout:</strong><br>
-                    - 60% Assembly Bay (High-ceiling)<br>
-                    - 20% Filter Lab & Storage<br>
-                    - 10% Finished Goods Warehouse<br>
-                    - 10% Admin & Design Suite<br>
-                    - Stamped for Alberta NBC Snow/Wind loads.
+                <div class="holo-header">PLANS: SITE LOGISTICS <span class="close" onclick="closeWin('schematics')">×</span></div>
+                <div class="data-block">
+                    <div class="data-label">Building Footprint</div>
+                    <div class="data-value">20,000 sq ft Modular Assembly Forge. 30m Right of Way for internal heavy-truck logistics.</div>
                 </div>
-            </div>
-        </div>
-
-        <div id="win-machinery" class="holo-window">
-            <div class="text-overlay">
-                <div class="holo-header">TOOLS <span class="close" onclick="closeWin('machinery')">×</span></div>
-                <div class="product-scroll">
-                    <strong>Machinery Inventory:</strong><br>
-                    - Haas UMC-750 5-axis CNC ($400k)<br>
-                    - 6kW Fiber Laser Cutter ($350k)<br>
-                    - Fanuc Robotic Welding Arm ($200k)<br>
-                    - HEPA Pleating Machine ($150k)<br>
-                    - Testing Rig (DOP Aerosol) ($100k)
+                <div class="data-block">
+                    <div class="data-label">Regulatory (DIZ)</div>
+                    <div class="data-value">Designated Industrial Zone Framework: Streamlined EPEA approvals (6-month fast-track).</div>
+                </div>
+                <div class="data-block">
+                    <div class="data-label">Expansion Capacity</div>
+                    <div class="data-value">5 hectares (12.3 acres) dedicated to Phase 1. 60+ acres retained for Tier 2 "Urban Forest" carbon capture.</div>
                 </div>
             </div>
         </div>
 
         <div id="win-suppliers" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">PARTNERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
-                <div class="product-scroll">
-                    <strong>Tier 1 Supply Chain:</strong><br>
-                    - 3M (Filtration Media/Ionizers)<br>
-                    - Russel Metals (Structural Stainless)<br>
-                    - ebm-papst (High-Efficiency EC Fans)<br>
-                    - Stantec (Environmental Engineering)<br>
-                    - CSA Group (Certification/Standards)
+                <div class="holo-header">FINANCE: INCENTIVES <span class="close" onclick="closeWin('suppliers')">×</span></div>
+                <div class="data-block">
+                    <div class="data-label">Heartland Incentive (HIP)</div>
+                    <div class="data-value">2.5% Tax Exemption on Eligible Capital Costs ($7.1M CAPEX = ~$177k/year savings).</div>
+                </div>
+                <div class="data-block">
+                    <div class="data-label">Alberta APIP Grant</div>
+                    <div class="data-value">Potential 12% grant on project eligible costs once operational (Post-Prototype Phase).</div>
+                </div>
+                <div class="data-block">
+                    <div class="data-label">Federal PrairiesCan</div>
+                    <div class="data-value">Advanced Manufacturing Stream: Interest-free repayable loans for CNC/Laser scaling.</div>
                 </div>
             </div>
         </div>
 
         <div id="hud-dock">
             <div id="ico-tracking" class="icon" onclick="toggleWin('tracking')">📍</div>
-            <div id="ico-aetheris" class="icon" onclick="toggleWin('aetheris')">🌬️</div>
-            <div id="ico-specs" class="icon" onclick="toggleWin('specs')">📐</div>
             <div id="ico-farmbuild" class="icon" onclick="toggleWin('farmbuild')">🌾</div>
             <div id="ico-schematics" class="icon" onclick="toggleWin('schematics')">🏗️</div>
-            <div id="ico-machinery" class="icon" onclick="toggleWin('machinery')">🛠️</div>
             <div id="ico-suppliers" class="icon" onclick="toggleWin('suppliers')">🤝</div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        let landingPlayer, mainPlayer;
-
+        let mainPlayer;
         function onYouTubeIframeAPIReady() {
-            landingPlayer = new YT.Player('landing-player', {
-                videoId: 'vGXERI3UW3k',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 0, 'loop': 1, 'playlist': 'vGXERI3UW3k', 'modestbranding': 1 }
-            });
             mainPlayer = new YT.Player('main-player', {
                 videoId: 'W54Y0cn78NY',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 0, 'loop': 1, 'playlist': 'W54Y0cn78NY', 'modestbranding': 1 }
+                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': 'W54Y0cn78NY' }
             });
         }
-
-        function initLanding() {
+        function initTerminal() {
             document.getElementById('entry-gate').style.display = 'none';
-            document.getElementById('landing-stage').style.display = 'flex';
-            if (landingPlayer && landingPlayer.playVideo) {
-                landingPlayer.unMute();
-                landingPlayer.playVideo();
-            }
-        }
-
-        function enterTerminal() {
-            if (landingPlayer && landingPlayer.pauseVideo) landingPlayer.pauseVideo();
-            document.getElementById('landing-stage').style.display = 'none';
             document.getElementById('main-terminal').style.display = 'block';
-            if (mainPlayer && mainPlayer.playVideo) {
-                mainPlayer.unMute();
-                mainPlayer.playVideo();
-            }
+            if (mainPlayer) mainPlayer.playVideo();
             toggleWin('tracking');
-            // Sequencing logic for breadwinner status
-            setTimeout(() => toggleWin('aetheris'), 8000);
-            setTimeout(() => toggleWin('specs'), 16000);
         }
-
         function toggleWin(id) {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
-            if (ico) {
-                ico.classList.add('active');
-                ico.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-            }
+            if (ico) ico.classList.add('active');
         }
-
         function closeWin(id) {
             document.getElementById('win-' + id).classList.remove('active');
             document.getElementById('ico-' + id).classList.remove('active');
         }
-
         function closeAllWindows() {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
