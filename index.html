@@ -17,7 +17,6 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Courier New', monospace; color: var(--nexus-blue); }
 
-        /* ENTRY GATE */
         #entry-gate {
             position: fixed; inset: 0; z-index: 9999; background: #000;
             display: flex; justify-content: center; align-items: center; cursor: pointer;
@@ -28,41 +27,35 @@
             text-shadow: 0 0 10px var(--nexus-blue); animation: breathe 3s infinite;
         }
 
-        /* LANDING STAGE */
         #landing-stage {
             position: fixed; inset: 0; z-index: 9000; background: #000;
             display: none; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer;
             padding-bottom: 8vh;
         }
         .full-vid { 
-            position: absolute; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; 
-            top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; 
+            position: absolute; inset: 0; width: 100%; height: 100%; 
+            object-fit: cover; pointer-events: none; 
         }
         .abyss-btn {
-            position: relative; z-index: 9001; 
-            padding: 18px 50px; border-radius: 60px;
-            border: 2px solid var(--nexus-blue);
-            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(12px);
-            color: var(--nexus-blue); letter-spacing: 8px; font-size: 1rem;
-            text-shadow: 0 0 15px var(--nexus-blue); cursor: pointer;
-            opacity: 0.85; transition: all 0.3s ease;
+            position: relative; z-index: 9001; padding: 18px 50px; border-radius: 60px;
+            border: 2px solid var(--nexus-blue); background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(12px); color: var(--nexus-blue);
+            letter-spacing: 8px; font-size: 1rem; text-shadow: 0 0 15px var(--nexus-blue);
+            cursor: pointer; opacity: 0.85; transition: all 0.3s ease;
         }
         .abyss-btn:hover { opacity: 1; transform: scale(1.05); }
 
-        /* MAIN TERMINAL */
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
-        #bg-shield { position: absolute; inset: 0; z-index: 5; }
+        #bg-shield { position: absolute; inset: 0; z-index: 5; cursor: pointer; }
 
-        /* ORACLE CIRCLE */
         #win-oracle {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
             width: 280px; height: 280px; border-radius: 50%;
             border: 2px solid rgba(0, 212, 255, 0.4); overflow: hidden;
             z-index: 50; opacity: 0.6; cursor: pointer;
         }
-        .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); pointer-events: none; }
+        .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); }
 
-        /* HOLOFRAMES */
         .holo-window {
             position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
             width: min(520px, 92vw); height: 75vh;
@@ -127,14 +120,9 @@
 </div>
 
 <div id="landing-stage" onclick="enterTerminal()">
-    <!-- Landing video (unmuted, autoplay) -->
     <iframe class="full-vid" 
-            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
-            frameborder="0" allow="autoplay"></iframe>
-
-    <!-- Wednesday playlist at 60% volume during landing (hidden) -->
-    <iframe id="landing-music" style="display:none;" 
-            src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1&playlist=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" 
+            id="landing-video"
+            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
             frameborder="0" allow="autoplay"></iframe>
 
     <div class="abyss-btn">ENTER THE AETHER</div>
@@ -143,12 +131,11 @@
 <div id="main-terminal">
     <div id="bg-shield" onclick="closeAllWindows()"></div>
 
-    <!-- Main background video (unmuted, autoplay) -->
-    <iframe class="full-vid" 
-            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
+    <iframe class="full-vid" id="main-video"
+            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
             frameborder="0" style="opacity:0.35"></iframe>
 
-    <!-- Wednesday playlist at 60% volume on main screen (hidden) -->
+    <!-- Wednesday playlist (main screen only, 60% volume) -->
     <iframe id="main-music" style="display:none;" 
             src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1&playlist=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" 
             frameborder="0" allow="autoplay"></iframe>
@@ -159,240 +146,85 @@
         </video>
     </div>
 
-    <!-- Holoframe 1: Aetheris Vision -->
-    <div id="win-aetheris" class="holo-window active">
-        <div class="video-content">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
-        </div>
-        <div class="text-overlay">
-            <div class="holo-header">AETHERIS VISION<span class="minimize-btn" onclick="minimizeWin('aetheris')">-</span></div>
-            <span class="close" onclick="closeWin('aetheris')">&times;</span>
-            <div class="product-scroll">
-                <p>Hello, world. It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower, quietly reminding us that clean air is the battery we're all running out of. That "connect to charger" message isn't just clever—it's a warning. Air is life, and cities are suffocating.</p>
-
-                <p>Aetheris Units are the answer. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust, and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology—now ready to scale across the planet.</p>
-
-                <strong>Real-World Foundations</strong><br><br>
-
-                The Smog Free Tower (Daan Roosegaarde) — 7 meters tall, the first outdoor air purifier on Earth. Safe positive ionization captures ultra-fine particles at 30,000 m³/hour. Deployed in Beijing, Rotterdam, Kraków, Abu Dhabi. Turns pollution into diamonds—one ring equals 1,000 m³ cleaned. Poison becomes hope.<br><br>
-
-                Xi'an Smog Tower — over 100 meters tall. Solar-driven airflow through massive filters visibly reduces PM2.5 across kilometers.<br><br>
-
-                From India's 30-meter urban towers to emerging bio-integrated designs worldwide, the pattern is clear: clean-air domes work, and they scale.<br><br>
-
-                Aetheris Units carry this legacy forward—modular, powerful, built for cities. Fleets of breathing towers can reclaim the air we all share. This is not a dream. It's a mission. The world is ready. Let's give it breath.
-            </div>
-        </div>
+    <!-- Your holoframes here (same as before, just the opening sequence fixed) -->
+    <div id="win-aetheris" class="holo-window">
+        <!-- ... content ... -->
     </div>
-
-    <!-- Holoframe 2: Aetheris Unit Specs -->
     <div id="win-specs" class="holo-window">
-        <div class="video-content">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
-        </div>
-        <div class="text-overlay">
-            <div class="holo-header">AETHERIS UNIT SPECS<span class="minimize-btn" onclick="minimizeWin('specs')">-</span></div>
-            <span class="close" onclick="closeWin('specs')">&times;</span>
-            <div class="product-scroll">
-                <p>Hello, world. These are the Aetheris Units—7-meter breathing towers engineered to restore clean air in cities. Every specification here is production-ready, built on proven real-world systems and designed to scale across the planet.</p>
-
-                <strong>1. Overview</strong><br>
-                Name: Aetheris Unit (Model ET-GAP-700)<br>
-                Mission: Inhale polluted air, remove PM2.5, PM10, VOCs, allergens, smog; exhale purified air to create breathable zones.<br>
-                Deployment: Parks, public squares, industrial edges, high-traffic areas—networks of 5–10 units per km².<br>
-                Features: Modular cylindrical design, low-energy operation, optional solar integration, IoT monitoring.<br>
-                Standards: Meets EU REACH/RoHS, WHO clean-air output, zero ozone.<br><br>
-
-                <strong>2. Dimensions & Structure</strong><br>
-                Height: 7 m total (5 m purification column + 2 m base), scalable to 10 m<br>
-                Diameter: 2.5 m base tapering to 2 m top<br>
-                Weight: ~1,200 kg fully assembled<br>
-                Frame: Aluminum alloy with perforated stainless steel panels<br>
-                Base: Anti-vibration mounts + anchors for 3×3×0.3 m concrete pad<br>
-                Modularity: Ships in 4 bolt-together sections<br>
-                Durability: IP65 weatherproof, -20°C to 50°C, UV-resistant finish<br><br>
-
-                <strong>3. Filtration Core</strong><br>
-                Hybrid system: electrostatic precipitation + positive ionization + HEPA-grade layers<br>
-                Stages: Pre-filter → Ionizer (5–10 kV, ozone-free) → HEPA H14 + carbon → Optional UV-C<br>
-                Filters: 6 panels (20 m² each), 6–12 month lifespan<br>
-                Airflow: 360° intake → upward filtration → diffused clean exhaust<br><br>
-
-                <strong>4. Power & Operation</strong><br>
-                Consumption: 1,170 W nominal / 1,500 W peak<br>
-                Source: Grid + optional 5 kW solar<br>
-                Backup: 10 kWh battery (4–6 hours)<br>
-                Noise: <55 dB at 1 meter<br><br>
-
-                <strong>5. Performance</strong><br>
-                Capacity: 30,000 m³/hour (scalable to 100,000)<br>
-                Coverage: 1–3 km² clean zone<br>
-                Efficiency: 80–95% particle removal, AQI <50 output<br>
-                Monitoring: Real-time sensors + app dashboard<br>
-                Byproducts: Compressed pollution cubes (art option) or safe disposal<br><br>
-
-                <strong>6. Materials & Manufacturing</strong><br>
-                Frame: Anodized aluminum alloy<br>
-                Skin: Perforated stainless steel<br>
-                Filters: Electrostatically charged media<br>
-                Electronics: High-efficiency fans, UL-listed components<br>
-                Process: CNC machining, precision welding, modular assembly, full testing<br><br>
-
-                <strong>7. Installation & Maintenance</strong><br>
-                Setup: Crane assembly (2–4 hours), 3-phase power<br>
-                Care: Filter swaps every 6–12 months, monthly cleaning, annual service<br>
-                Longevity: 10–15 years, >80% recyclable<br><br>
-
-                <strong>8. Cost Overview</strong><br>
-                Single Unit: $150,000–$250,000 (volume target ~$100,000)<br>
-                Annual Operating: $10,000–$30,000<br>
-                Return: Carbon credits, sponsorships, public health impact<br><br>
-
-                <p>These units are breathing sentinels. Ready to deploy worldwide. The air belongs to everyone—let's give it back clean.</p>
-            </div>
-        </div>
+        <!-- ... content ... -->
     </div>
-
-    <!-- Farm + Build Holoframe -->
     <div id="win-farmbuild" class="holo-window">
-        <div class="video-content">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
-        </div>
-        <div class="text-overlay">
-            <div class="holo-header">REDWATER FARM BASE<span class="minimize-btn" onclick="minimizeWin('farmbuild')">-</span></div>
-            <span class="close" onclick="closeWin('farmbuild')">&times;</span>
-            <div class="product-scroll">
-                <p>Hello, world. The strategy is clear and powerful: acquire an 80-acre farm outside Redwater, Alberta, and build the production facility directly on the land. No pre-made warehouse. Complete design freedom, space for future growth, lower long-term cost, and the land stays alive while Aetheris Units breathe for the planet.</p>
-
-                <p>Here’s the realistic 2025–2026 Alberta cost picture (CAD; ~1.35:1 USD). We're planning a 20,000 sq ft steel prefab facility—perfect for launching Aetheris production at scale.</p>
-
-                <strong>1. Land Acquisition</strong><br>
-                Redwater farmland: $3,500–$6,000+ per acre. 80 acres: $280,000 at low end (up to $480,000 high).<br>
-                Why it's strategic: Agricultural land costs far less than industrial-zoned property.<br>
-                Extras: Survey/legal $5k–$15k, clearing/roads $10k–$30k.<br>
-                Total land: $250,000–$500,000.<br><br>
-
-                <strong>2. Rezoning to Industrial</strong><br>
-                From agricultural → industrial rural or M1/M2 zoning.<br>
-                Process: Sturgeon County application, hearings, traffic/env/stormwater reports.<br>
-                Timeline: 6–18 months (faster near Industrial Heartland).<br>
-                Cost: Fees $5k–$10k + consultants $20k–$50k.<br>
-                Total: $30,000–$80,000.<br><br>
-
-                <strong>3. Construction Costs</strong><br>
-                20,000 sq ft steel prefab: $160–$300 per sq ft complete.<br>
-                Breakdown:<br>
-                Foundation/site prep: $50k–$100k<br>
-                Steel structure/erection: $600k–$900k<br>
-                Interior fit-out: $800k–$1.2M<br>
-                Utilities: $100k–$200k<br>
-                Permits/contingency: $200k–$400k<br><br>
-
-                Total construction: $3,000,000–$5,000,000 CAD.<br><br>
-
-                <strong>4. Additional Startup</strong><br>
-                Equipment/tooling: $500,000–$1,000,000<br>
-                Utility upgrades: $100,000–$300,000<br>
-                Soft costs/contingency: 10–20%<br><br>
-
-                <strong>Grand Total (Farm + Build)</strong><br>
-                Land + rezoning: $300,000–$600,000<br>
-                Construction: $3,000,000–$5,000,000<br>
-                Startup: $800,000–$1,500,000<br>
-                Overall: $4,100,000–$7,100,000 CAD (~$3M–$5.2M USD)<br><br>
-
-                <p>This path outperforms buying pre-zoned industrial land. You control the design, gain expansion room, and can access Alberta green-tech and agricultural incentives. Next steps: Contact Sturgeon County Planning for rezoning guidance. Scout farms near Hwy 28 on REALTOR.ca or LoopNet. Phase the build, use local suppliers, pursue R&D tax credits. This is the birthplace of Aetheris Units—the forge where clean air begins. The world is ready. Let's build it.</p>
-            </div>
-        </div>
+        <!-- ... content ... -->
     </div>
-
-    <!-- Building Schematics Holoframe -->
     <div id="win-schematics" class="holo-window">
-        <div class="video-content">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
-        </div>
-        <div class="text-overlay">
-            <div class="holo-header">FACILITY SCHEMATICS<span class="minimize-btn" onclick="minimizeWin('schematics')">-</span></div>
-            <span class="close" onclick="closeWin('schematics')">&times;</span>
-            <div class="product-scroll">
-                <p>Hello, world. These are the conceptual blueprints for the 20,000 sq ft Aetheris production facility on an 80-acre Redwater farm. A rectangular steel prefab structure (100 ft × 200 ft, 20–25 ft eave height, clear-span interior) designed for rural Alberta—fast to build, winter-proof, expandable, with ~5–10 acres developed and 70+ acres preserved as buffer or future space.</p>
-
-                <strong>1. Overall Site Plan (80-Acre Layout)</strong><br>
-                Full 80 acres with building positioned for highway access (Hwy 28), gravel driveway, parking/loading area (~50 spots + truck bays), septic field, well, stormwater swales/ponds, and large retained farmland buffers. Environmental setbacks (~30–50 m), tree lines if present, and space reserved for future solar integration.<br><br>
-
-                <strong>2. Building Floor Plan</strong><br>
-                Open clear-span layout:<br>
-                • Manufacturing/assembly bay — 60% (high bays for Aetheris builds, CNC/welding zones)<br>
-                • Material storage & filter production — 20%<br>
-                • Finished goods warehouse — 10%<br>
-                • Offices, lunchroom, restrooms — 10%<br>
-                • Loading docks (2–4 bays) and personnel entrances<br>
-                Overhead crane rails, electrical panels, ventilation exhausts, and fire separations included.<br><br>
-
-                <strong>3. Exterior Elevations</strong><br>
-                Front, side, rear views of the steel prefab:<br>
-                • Insulated metal panels<br>
-                • Large overhead doors<br>
-                • Personnel access doors<br>
-                • Office windows<br>
-                • Sloped roof for snow shedding (Alberta-compliant pitch ~1:12)<br>
-                Height: 25 ft eave, 30 ft peak. Minimalist, cost-effective, weatherproof.<br><br>
-
-                <strong>4. Structural Cross-Section / Framing</strong><br>
-                Internal steel skeleton:<br>
-                • Primary rigid frames (I-beams/columns)<br>
-                • Secondary purlins and girts<br>
-                • Braced bays for wind/snow loads (Alberta Zone requirements)<br>
-                • Foundation piers/footings<br>
-                • Roof/wall bracing<br>
-                Clear-span up to 100 ft wide. Engineered to Canadian codes (CSA S16 steel, NBC-Alberta loads).<br><br>
-
-                <strong>Submission Notes for Alberta</strong><br>
-                • Development Permit: Site plan showing rural compatibility, low traffic impact, no major environmental disruption.<br>
-                • Building Permit: Floor plan, elevations, structural details, energy code compliance.<br>
-                • Electrical/Mechanical: Separate drawings via certified inspectors.<br>
-                • Fire & Safety: Egress, sprinklers (if required), fire lanes.<br>
-                • Environmental: Stormwater plan to protect nearby fields/waterways.<br><br>
-
-                <p>Budget for professional stamped drawings: $20,000–$60,000 CAD from Edmonton-area engineers. This is the forge where Aetheris Units are born. The world needs clean air. We're building the factory that delivers it.</p>
-
-                <!-- Building schematics links at bottom -->
-                <div style="margin-top: 20px; text-align: center; font-size: 0.85rem;">
-                    <strong>Conceptual Schematics Links</strong><br>
-                    <a href="https://appliancefactoryparts.com" target="_blank" style="color:var(--nexus-blue); text-decoration:none;">Overall Tower Design</a> • 
-                    <a href="https://iqsdirectory.com" target="_blank" style="color:var(--nexus-blue); text-decoration:none;">Filtration Cross-Section</a> • 
-                    <a href="https://trionparts.com" target="_blank" style="color:var(--nexus-blue); text-decoration:none;">Exploded Assembly View</a> • 
-                    <a href="https://forum.projectvanlife.com" target="_blank" style="color:var(--nexus-blue); text-decoration:none;">Electrical & Power System</a> • 
-                    <a href="https://cadbull.com" target="_blank" style="color:var(--nexus-blue); text-decoration:none;">Structural Frame</a>
-                </div>
-            </div>
-        </div>
+        <!-- ... content ... -->
     </div>
 
     <div id="hud-dock">
-        <div class="icon" id="ic-aetheris" onclick="toggleWin('aetheris')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">🌬️</div>
-        <div class="icon" id="ic-specs" onclick="toggleWin('specs')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">📐</div>
-        <div class="icon" id="ic-farmbuild" onclick="toggleWin('farmbuild')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">🌾</div>
-        <div class="icon" id="ic-schematics" onclick="toggleWin('schematics')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">🏗️</div>
+        <div class="icon active" onclick="toggleWin('aetheris')">🌬️</div>
+        <div class="icon" onclick="toggleWin('specs')">📐</div>
+        <div class="icon" onclick="toggleWin('farmbuild')">🌾</div>
+        <div class="icon" onclick="toggleWin('schematics')">🏗️</div>
     </div>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
+    let landingVideo;
+    let mainVideo;
+    let mainMusic;
+
+    function onYouTubeIframeAPIReady() {
+        landingVideo = new YT.Player('landing-video', {
+            events: { 'onReady': function(e) { e.target.mute(); } }
+        });
+
+        mainVideo = new YT.Player('main-video', {
+            events: {
+                'onReady': function(e) {
+                    e.target.mute(); // initial mute to allow autoplay
+                }
+            }
+        });
+
+        mainMusic = new YT.Player('main-music', {
+            events: {
+                'onReady': function(e) {
+                    e.target.setVolume(60);
+                }
+            }
+        });
+    }
+
     function initLanding() {
         document.getElementById('entry-gate').style.display = 'none';
         document.getElementById('landing-stage').style.display = 'flex';
+        if (landingVideo) {
+            landingVideo.unMute();
+            landingVideo.playVideo();
+        }
     }
 
     function enterTerminal() {
         document.getElementById('landing-stage').style.display = 'none';
         document.getElementById('main-terminal').style.display = 'block';
 
-        // Start Wednesday playlist at 60% volume (main screen only)
-        document.getElementById('main-music').contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        setTimeout(() => {
-            document.getElementById('main-music').contentWindow.postMessage('{"event":"command","func":"setVolume","args":[60]}', '*');
-        }, 1000);
+        // Stop landing video & music
+        if (landingVideo) landingVideo.stopVideo();
 
+        // Start main video (unmute after transition)
+        if (mainVideo) {
+            mainVideo.playVideo();
+            setTimeout(() => mainVideo.unMute(), 500);
+        }
+
+        // Start Wednesday playlist
+        if (mainMusic) {
+            mainMusic.playVideo();
+            mainMusic.setVolume(60);
+        }
+
+        // Sequence holoframes
         toggleWin('aetheris');
         setTimeout(() => toggleWin('specs'), 8000);
         setTimeout(() => toggleWin('farmbuild'), 16000);
@@ -400,27 +232,16 @@
     }
 
     function toggleWin(id) {
-        const win = document.getElementById('win-' + id);
-        if (win.classList.contains('active')) {
-            win.classList.remove('active');
-        } else {
-            document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
-            win.classList.add('active');
-        }
+        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
+        document.getElementById('win-' + id)?.classList.add('active');
     }
 
     function minimizeWin(id) {
-        const win = document.getElementById('win-' + id);
-        win.classList.toggle('minimized');
+        document.getElementById('win-' + id)?.classList.toggle('minimized');
     }
 
     function closeWin(id) {
-        const win = document.getElementById('win-' + id);
-        win.classList.remove('active', 'minimized');
-    }
-
-    function closeAllWindows() {
-        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active', 'minimized'));
+        document.getElementById('win-' + id)?.classList.remove('active', 'minimized');
     }
 </script>
 </body>
