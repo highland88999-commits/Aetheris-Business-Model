@@ -10,11 +10,12 @@
             --neon-purple: #bc13fe;
             --emerald: #00ff88;
             --bloom-green: 0 0 15px var(--emerald), 0 0 30px rgba(0, 255, 136, 0.5);
-            --glass: rgba(0, 10, 15, 0.3);
+            --glass: rgba(0, 10, 15, 0.45);
+            --border: rgba(0, 212, 255, 0.35);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
-        body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Arial Black', sans-serif; color: white; }
+        body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Courier New', monospace; color: var(--nexus-blue); }
 
         /* --- ENTRY GATE --- */
         #entry-gate {
@@ -78,6 +79,7 @@
             box-shadow: 0 0 25px rgba(188, 19, 254, 0.4);
             border-radius: 40px; backdrop-filter: blur(25px);
             z-index: 200; display: none; flex-direction: column; overflow: hidden;
+            margin-bottom: 72px; /* ensures bottom of text ends ~2mm above dock */
         }
         .holo-window.active { display: flex; animation: zoomIn 0.5s ease-out forwards; }
         .holo-window.minimized { height: 60px; overflow: hidden; opacity: 0.7; }
@@ -86,7 +88,7 @@
         .video-content iframe { width: 100%; height: 100%; border: none; }
 
         .text-overlay {
-            position: relative; z-index: 2; height: 100%; padding: 20px 20px 70px 20px; /* extra bottom padding so text ends ~2mm above dock */
+            position: relative; z-index: 2; height: 100%; padding: 20px 20px 80px 20px; /* extra bottom padding so text ends ~2mm above dock */
             display: flex; flex-direction: column; justify-content: space-between;
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent, rgba(0,0,0,0.9));
         }
@@ -111,7 +113,7 @@
 
         #hud-dock {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 40px; z-index: 300; /* above holoframes */
+            display: flex; gap: 40px; z-index: 300;
             background: rgba(0,0,0,0.6);
             padding: 10px 30px;
             border-radius: 40px 40px 0 0;
@@ -153,7 +155,7 @@
             src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
             frameborder="0" style="opacity:0.35"></iframe>
 
-    <!-- Wednesday playlist at 50% volume (hidden) -->
+    <!-- Wednesday playlist at 50% volume (hidden, plays on main screen) -->
     <audio id="wednesday-bg" loop volume="0.5">
         <source src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" type="audio/mp3">
     </audio>
@@ -173,19 +175,19 @@
             <div class="holo-header">AETHERIS VISION<span class="minimize-btn" onclick="minimizeWin('aetheris')">-</span></div>
             <span class="close" onclick="closeWin('aetheris')">&times;</span>
             <div class="product-scroll">
-                <p>Hello, world. What started as a single phone lock screen image—a sleek 3M-branded cylindrical tower reminding us clean air is the real battery we're draining—has become something much bigger. That quiet "connect to charger" warning isn't just clever. It's urgent. Air is life, and it's running out in cities everywhere.</p>
+                <p>Hello, world. It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower, quietly reminding us that clean air is the battery we're all running out of. That "connect to charger" message isn't just clever—it's a warning. Air is life, and cities are suffocating.</p>
 
-                <p>Aetheris Units are the response. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology now ready to scale globally.</p>
+                <p>Aetheris Units are the answer. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust, and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology—now ready to scale across the planet.</p>
 
                 <strong>Real-World Foundations</strong><br><br>
 
-                The Smog Free Tower (Daan Roosegaarde) — 7 meters of hope. First outdoor air purifier on Earth. Safe ionization captures ultra-fines at 30,000 m³/hour. Deployed in Beijing, Rotterdam, Kraków, Abu Dhabi. Turns pollution into diamonds—one ring equals 1,000 m³ cleaned. Poison becomes art.<br><br>
+                The Smog Free Tower (Daan Roosegaarde) — 7 meters tall, the first outdoor air purifier on Earth. Safe positive ionization captures ultra-fine particles at 30,000 m³/hour. Deployed in Beijing, Rotterdam, Kraków, Abu Dhabi. Turns pollution into diamonds—one ring equals 1,000 m³ cleaned. Poison becomes hope.<br><br>
 
                 Xi'an Smog Tower — over 100 meters tall. Solar-driven airflow through massive filters visibly reduces PM2.5 across kilometers.<br><br>
 
-                From India's 30-meter urban towers to emerging bio-integrated designs worldwide, the pattern is undeniable: clean-air domes work, and they scale.<br><br>
+                From India's 30-meter urban towers to emerging bio-integrated designs worldwide, the pattern is clear: clean-air domes work, and they scale.<br><br>
 
-                Aetheris Units carry this legacy forward—modular, powerful, built for cities. Fleets of breathing towers can reclaim the air we all share. This is no longer a dream. It's a mission. The world is ready. Let's give it clean air.
+                Aetheris Units carry this legacy forward—modular, powerful, built for cities. Fleets of breathing towers can reclaim the air we all share. This is not a dream. It's a mission. The world is ready. Let's give it breath.
             </div>
         </div>
     </div>
@@ -253,7 +255,7 @@
                 Annual Operating: $10,000–$30,000<br>
                 Return: Carbon credits, sponsorships, public health impact<br><br>
 
-                <p>These units are not just machines. They are the beginning of clean-air cities. The world is watching. Let's give it breath again.</p>
+                <p>These units are breathing sentinels. Ready to deploy worldwide. The air belongs to everyone—let's give it back clean.</p>
             </div>
         </div>
     </div>
@@ -306,7 +308,7 @@
                 Startup: $800,000–$1,500,000<br>
                 Overall: $4,100,000–$7,100,000 CAD (~$3M–$5.2M USD)<br><br>
 
-                <p>This approach outperforms buying pre-zoned industrial land. You control the design, gain expansion room, and can access Alberta green-tech and agricultural incentives. Next steps: Contact Sturgeon County Planning for rezoning guidance. Scout farms near Hwy 28 on REALTOR.ca or LoopNet. Phase the build, use local suppliers, pursue R&D tax credits. This is the birthplace of Aetheris Units—the forge where clean air begins. The world is ready. Let's build it.</p>
+                <p>This path outperforms buying pre-zoned industrial land. You control the design, gain expansion room, and can access Alberta green-tech and agricultural incentives. Next steps: Contact Sturgeon County Planning for rezoning guidance. Scout farms near Hwy 28 on REALTOR.ca or LoopNet. Phase the build, use local suppliers, pursue R&D tax credits. This is the birthplace of Aetheris Units—the forge where clean air begins. The world is ready. Let's build it.</p>
             </div>
         </div>
     </div>
