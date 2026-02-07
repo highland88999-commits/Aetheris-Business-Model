@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympus Aether Network Facility Simulator</title>
+    <style>
+        body { margin: 0; background: #050505; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; pointer-events: none; }
+        h1 { margin: 0; font-weight: 300; letter-spacing: 2px; color: #00d4ff; }
+        .hint { font-size: 0.9em; opacity: 0.7; }
+        #stage-selector { position: absolute; top: 50px; left: 20px; z-index: 10; pointer-events: all; }
+        #icon-panel { 
+            position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(0, 0, 0, 0.8);
+            display: flex; justify-content: center; align-items: center; gap: 40px; z-index: 100;
+        }
+        .icon { cursor: pointer; font-size: 24px; color: #00d4ff; }
+        .icon:hover { color: #ffffff; }
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9);
+            z-index: 200; overflow-y: auto; padding: 20px; color: white;
+        }
+        .modal-content { max-width: 800px; margin: auto; }
+        .close { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="ui">
+        <h1>OLYMPUS AETHER NETWORK FACILITY</h1>
+        <p class="hint">3D Simulator: From Zero to Operational // Redwater, Alberta 2026 ❤️</p>
+    </div>
+    <select id="stage-selector">
+        <option value="0">Stage 0: Empty Land</option>
+        <option value="1">Stage 1: Site Preparation</option>
+        <option value="2">Stage 2: Construction</option>
+        <option value="3">Stage 3: Completed Facility</option>
+        <option value="4">Stage 4: Fully Operational</option>
+    </select>
+
+    <div id="icon-panel">
+        <div class="icon" onclick="openModal('land')">🌍 Land</div>
+        <div class="icon" onclick="openModal('factory')">🏭 Factory</div>
+        <div class="icon" onclick="openModal('warehouse')">📦 Warehouse</div>
+        <div class="icon" onclick="openModal('units')">🛡️ Units</div>
+        <div class="icon" onclick="openModal('companies')">🤝 Companies</div>
+    </div>
+
+    <!-- Modals -->
+    <div id="land-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Land Acquisition and Preparation</h2>
+            <p>80-acre farm outside Redwater, Alberta (Sturgeon County). Estimated cost: $250,000–$500,000 CAD. Rezoning from agricultural to industrial: $30,000–$80,000. Site prep (clearing, gravel roads): $10,000–$30,000. Total: $300,000–$600,000. Proximity to Hwy 28 for access.</p>
+        </div>
+    </div>
+    <div id="factory-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Production Factory</h2>
+            <p>20,000 sq ft steel prefab: Manufacturing bays (60%), offices (10%). Construction cost: $3M–$5M CAD. Equipment: CNC ($50k–$150k), welders ($5k–$10k). Total startup: $4.1M–$7.1M. Schematics include floor plans, elevations, structural details.</p>
+        </div>
+    </div>
+    <div id="warehouse-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Warehouse</h2>
+            <p>Integrated storage (30% of facility): Material racks, finished towers. On same 80 acres, with loading docks. Cost included in factory build. Schematics: Site plan shows warehouse zones, structural cross-sections.</p>
+        </div>
+    </div>
+    <div id="units-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Air Purifier Units</h2>
+            <p>Per unit: Materials $33,900, labor $3,600, total ~$52,400. Parts: Aluminum frame, HEPA filters, solar panels. Schematics: Overall design, filtration cross-section, exploded view, electrical, structural. Production machinery: CNC, welders, etc.</p>
+        </div>
+    </div>
+    <div id="companies-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Companies Required</h2>
+            <p>Real Estate: RE/MAX ($15k–$25k). Planning: MVH Urban ($20k–$40k). Construction: Alpha Inc. ($3M–$4.5M). Engineering: Arrow ($25k–$50k). Machinery: Leavitt ($200k–$400k). Materials: Russel Metals ($40k–$80k). Environmental: North Shore ($15k–$30k). Utilities: EPCOR ($50k–$150k).</p>
+        </div>
+    </div>
+
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // --- Setup ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // --- Lighting ---
+        const light = new THREE.PointLight(0xffffff, 100, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        // --- Ground (Farm Land) ---
+        const groundGeom = new THREE.PlaneGeometry(100, 100);
+        const groundMat = new THREE.MeshPhongMaterial({ color: 0x228B22 }); // Green field
+        const ground = new THREE.Mesh(groundGeom, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        scene.add(ground);
+
+        // --- Stages Models ---
+        const stages = [];
+        stages[0] = new THREE.Group(); // Empty land (just ground)
+
+        // Stage 1: Site Prep (cleared area, fences)
+        const stage1 = new THREE.Group();
+        const clearedGeom = new THREE.PlaneGeometry(30, 50);
+        const clearedMat = new THREE.MeshPhongMaterial({ color: 0x8B4513 }); // Dirt
+        const cleared = new THREE.Mesh(clearedGeom, clearedMat);
+        cleared.rotation.x = -Math.PI / 2;
+        cleared.position.set(0, 0.01, 0);
+        stage1.add(cleared);
+        stages[1] = stage1;
+
+        // Stage 2: Construction (frame)
+        const stage2 = new THREE.Group();
+        stage2.add(cleared.clone());
+        const frameGeom = new THREE.BoxGeometry(20, 5, 40);
+        const frameMat = new THREE.MeshPhongMaterial({ color: 0x808080, wireframe: true });
+        const frame = new THREE.Mesh(frameGeom, frameMat);
+        frame.position.set(0, 2.5, 0);
+        stage2.add(frame);
+        stages[2] = stage2;
+
+        // Stage 3: Completed Facility
+        const stage3 = new THREE.Group();
+        stage3.add(cleared.clone());
+        const buildingGeom = new THREE.BoxGeometry(20, 5, 40);
+        const buildingMat = new THREE.MeshPhongMaterial({ color: 0xA9A9A9 });
+        const building = new THREE.Mesh(buildingGeom, buildingMat);
+        building.position.set(0, 2.5, 0);
+        stage3.add(building);
+        stages[3] = stage3;
+
+        // Stage 4: Operational (with units/towers)
+        const stage4 = new THREE.Group();
+        stage4.add(building.clone());
+        const towerGeom = new THREE.CylinderGeometry(0.5, 0.5, 3, 32);
+        const towerMat = new THREE.MeshPhongMaterial({ color: 0x00d4ff });
+        for (let i = 0; i < 5; i++) {
+            const tower = new THREE.Mesh(towerGeom, towerMat);
+            tower.position.set(-5 + i * 3, 1.5, -10);
+            stage4.add(tower);
+        }
+        stages[4] = stage4;
+
+        let currentStage = stages[0];
+        scene.add(currentStage);
+
+        // --- Camera ---
+        camera.position.set(0, 10, 30);
+        camera.lookAt(0, 0, 0);
+
+        // --- Stage Selector ---
+        document.getElementById('stage-selector').addEventListener('change', (e) => {
+            scene.remove(currentStage);
+            currentStage = stages[parseInt(e.target.value)];
+            scene.add(currentStage);
+        });
+
+        // --- Render Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+            currentStage.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- Modal Functions ---
+        function openModal(id) {
+            document.getElementById(`${id}-modal`).style.display = 'block';
+        }
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
