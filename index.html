@@ -56,7 +56,7 @@
             background: var(--glass); border: 2px solid var(--neon-purple); 
             box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-radius: 30px; 
             backdrop-filter: blur(20px); z-index: 200; display: none; flex-direction: column; overflow: hidden; 
-            bottom: 81px;
+            bottom: 81px;  /* restored exact 1mm gap (80px dock + 1px) */
         }
         .holo-window.active { display: flex; animation: zoomIn 0.4s ease-out forwards; }
 
@@ -113,7 +113,6 @@
             </div>
         </div>
 
-        <!-- AETHERIS VISION -->
         <div id="win-aetheris" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
@@ -134,7 +133,6 @@
             </div>
         </div>
 
-        <!-- UNIT SPECS -->
         <div id="win-specs" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
@@ -153,7 +151,6 @@
             </div>
         </div>
 
-        <!-- REDWATER FARM BASE -->
         <div id="win-farmbuild" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
@@ -170,7 +167,6 @@
             </div>
         </div>
 
-        <!-- FACILITY SCHEMATICS -->
         <div id="win-schematics" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">PLANS <span class="close" onclick="closeWin('schematics')">×</span></div>
@@ -203,7 +199,6 @@
             </div>
         </div>
 
-        <!-- MACHINERY LIST -->
         <div id="win-machinery" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">TOOLS <span class="close" onclick="closeWin('machinery')">×</span></div>
@@ -223,7 +218,6 @@
             </div>
         </div>
 
-        <!-- BUSINESSES & SUPPLIERS -->
         <div id="win-suppliers" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">PARTNERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
@@ -257,43 +251,17 @@
 
         function onYouTubeIframeAPIReady() {
             landingPlayer = new YT.Player('landing-player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'vGXERI3UW3k',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'vGXERI3UW3k',
-                    'rel': 0,
-                    'playsinline': 1,
-                    'modestbranding': 1
-                },
                 events: {
                     'onReady': function(event) {
-                        // Mute on load - policy requirement
+                        event.target.mute();  // mute on load (policy)
                     }
                 }
             });
 
             mainPlayer = new YT.Player('main-player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'W54Y0cn78NY',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'W54Y0cn78NY',
-                    'rel': 0,
-                    'playsinline': 1,
-                    'modestbranding': 1
-                },
                 events: {
                     'onReady': function(event) {
-                        // Do NOT play or unmute here
+                        // no play/mute here - wait for explicit action
                     }
                 }
             });
@@ -303,7 +271,7 @@
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
 
-            // First real click → unmute + play landing video with sound
+            // First real click → unmute + play landing with sound
             if (landingPlayer) {
                 landingPlayer.unMute();
                 landingPlayer.playVideo();
@@ -317,7 +285,7 @@
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
 
-                // After transition → unmute + play main video with sound
+                // After transition → unmute + play main with sound
                 if (mainPlayer) {
                     mainPlayer.unMute();
                     mainPlayer.playVideo();
