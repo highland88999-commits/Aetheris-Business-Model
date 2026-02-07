@@ -42,7 +42,7 @@
         .abyss-btn:hover { transform: scale(1.05); background: rgba(0, 212, 255, 0.1); }
 
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
-        #bg-shield { position: absolute; inset: 0; z-index: 5; cursor: pointer; }
+        #bg-shield { position: absolute; inset: 0; z-index: 5; }
 
         #win-oracle { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); width: 260px; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.3); overflow: hidden; z-index: 50; opacity: 0.8; cursor: pointer; box-shadow: 0 0 30px rgba(0, 212, 255, 0.2); }
         .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; }
@@ -63,32 +63,15 @@
         .holo-header { color: var(--emerald); text-shadow: var(--bloom-green); letter-spacing: 3px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; margin-bottom: 15px; }
         .product-scroll { overflow-y: auto; color: var(--nexus-blue); font-size: 0.9rem; line-height: 1.6; flex-grow: 1; }
         .close { cursor: pointer; color: #ff3366; font-size: 1.5rem; }
-
-        /* Embedded site iframe styling */
-        .embedded-site {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 20px;
-            overflow: hidden;
-        }
         
         #hud-dock { 
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
-            display: flex; flex-wrap: nowrap; gap: 25px; z-index: 300; 
-            background: rgba(0,0,0,0.7); padding: 15px 30px; 
-            border-radius: 30px 30px 0 0; border: 1px solid var(--nexus-blue); 
-            border-bottom: none; height: 80px; overflow-x: auto; 
-            white-space: nowrap; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin; scrollbar-color: var(--neon-purple) transparent;
+            display: flex; gap: 25px; z-index: 300; background: rgba(0,0,0,0.7); 
+            padding: 15px 30px; border-radius: 30px 30px 0 0; 
+            border: 1px solid var(--nexus-blue); border-bottom: none; 
+            height: 80px; overflow-x: auto; white-space: nowrap;
         }
-        #hud-dock::-webkit-scrollbar { height: 6px; }
-        #hud-dock::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 3px; }
-        .icon { 
-            width: 55px; height: 55px; border: 1px solid var(--nexus-blue); 
-            border-radius: 15px; display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-size: 1.4rem; transition: 0.3s; flex-shrink: 0; 
-        }
+        .icon { width: 55px; height: 55px; border: 1px solid var(--nexus-blue); border-radius: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: 0.3s; flex-shrink: 0; }
         .icon:hover { background: rgba(0, 212, 255, 0.2); }
         .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); color: var(--emerald); }
 
@@ -104,9 +87,7 @@
 
     <div id="landing-stage">
         <div class="video-background">
-            <iframe id="landing-video" 
-                    src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0&playsinline=1" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <div id="landing-player"></div>
         </div>
         <div class="abyss-btn" onclick="enterTerminal()">ENTER THE AETHER</div>
     </div>
@@ -114,9 +95,7 @@
     <div id="main-terminal">
         <div id="bg-shield" onclick="closeAllWindows()"></div>
         <div class="video-background" style="opacity: 0.45;">
-            <iframe id="main-video" 
-                    src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=0&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0&playsinline=1" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <div id="main-player"></div>
         </div>
         
         <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
@@ -125,11 +104,32 @@
             </video>
         </div>
 
-        <!-- TRACKING – embedded site -->
+        <!-- TRACKING -->
         <div id="win-tracking" class="holo-window">
-            <div class="text-overlay" style="padding: 0;">
+            <div class="text-overlay">
                 <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
-                <iframe class="embedded-site" src="https://olympus-aetheris.vercel.app/" frameborder="0" allowfullscreen></iframe>
+                <div class="product-scroll">
+                    <p>Live Project Tracking & Deployment Dashboard</p>
+                    <p>Real-time visibility into the Aetheris initiative — milestones, budget, team updates, prototype progress, air quality feeds (when online), and global deployment map.</p>
+                    <br>
+                    <p><strong>Current Phase:</strong> Pre-prototype — site selection, rezoning, engineering drawings, partner outreach.</p>
+                    <br>
+                    <p style="text-align: center; margin: 40px 0;">
+                        <a href="https://olympus-aetheris.vercel.app/" target="_blank" style="color: var(--emerald); font-size: 1.2rem; text-decoration: none; border: 1px solid var(--emerald); padding: 15px 30px; border-radius: 12px; background: rgba(0, 255, 136, 0.1); transition: all 0.3s; display: inline-block;">
+                            Open Live Tracking Dashboard →
+                        </a>
+                    </p>
+                    <p>Dashboard features:</p>
+                    <ul>
+                        <li>Timeline & Gantt view</li>
+                        <li>Budget burn rate & funding tracker</li>
+                        <li>Prototype build photos & videos</li>
+                        <li>Partner & supplier directory</li>
+                        <li>Live sensor mockups (future)</li>
+                        <li>Deployment roadmap (first 10 cities)</li>
+                    </ul>
+                    <p>Direct link: <strong>https://olympus-aetheris.vercel.app/</strong></p>
+                </div>
             </div>
         </div>
 
@@ -163,9 +163,63 @@
             <div class="text-overlay">
                 <div class="holo-header">UNIT SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full specs content here - unchanged from previous -->
                     <p>Model ET-GAP-700. 7-meter breathing towers designed to reclaim clean air in cities. Production-ready, modular, solar-compatible.</p>
-                    <!-- ... rest of specs ... -->
+
+                    <strong>1. Overview</strong><br>
+                    Purpose: Clean polluted city air at scale. Creates breathable zones in smog-heavy areas.<br>
+                    Deployment: Parks, plazas, traffic choke points, industrial edges. 5–10 units/km² for saturation.<br>
+                    Features: Hybrid filtration, solar option, IoT monitoring, zero ozone.<br>
+                    Compliance: EU REACH/RoHS, WHO output standards.<br><br>
+
+                    <strong>2. Dimensions & Structure</strong><br>
+                    Height: 7m (5m filter column + 2m base) — scalable to 10m<br>
+                    Diameter: 2.5m base → 2m top (tapered)<br>
+                    Weight: ~1,200 kg loaded<br>
+                    Frame: Aluminum 6061-T6 + perforated 304 stainless panels<br>
+                    Base: Anti-vibe mounts + 3m×3m×0.3m concrete anchors<br>
+                    Modularity: 4 bolt-together sections (M10, 50 Nm)<br>
+                    Durability: IP65, -20°C to 50°C, UV-resistant silver/gray coat<br><br>
+
+                    <strong>3. Filtration System</strong><br>
+                    Hybrid: 3M electrostatic + positive ionization + HEPA<br>
+                    Stage 1: Washable SS pre-filter (10–20μm)<br>
+                    Stage 2: 5–10kV ionizer (charges ultra-fines, no ozone)<br>
+                    Stage 3: HEPA H14 (99.97% @ 0.3μm) + activated carbon for VOCs/odors<br>
+                    Stage 4: Optional UV-C (254nm, 20W) pathogen kill<br>
+                    Filters: 6× 1.5m×1m panels (20m² each), 3M Filtrete MERV 16, 6–12 month life<br>
+                    Airflow: 360° base intake → upward → diffused top exhaust<br><br>
+
+                    <strong>4. Power System</strong><br>
+                    Consumption: 1,170W nominal / 1,500W peak<br>
+                    Source: 110–240V grid + optional 5kW solar + passive greenhouse heat<br>
+                    Backup: 10kWh Li-ion (4–6h runtime)<br>
+                    Noise: <55 dB @ 1m (variable EC fans)<br><br>
+
+                    <strong>5. Performance</strong><br>
+                    Capacity: 30,000 m³/h (scalable to 100k)<br>
+                    Coverage: 1–3 km² bubble, 15–20% PM2.5 drop<br>
+                    Efficiency: 80–95% removal (EN 1822), AQI <50 output<br>
+                    Monitoring: PM2.5/CO2/VOC sensors + app<br>
+                    Byproducts: Compressed cubes (art/jewelry) or safe disposal<br><br>
+
+                    <strong>6. Materials & Manufacturing</strong><br>
+                    Frame: Anodized 6061-T6 aluminum<br>
+                    Panels: 1.5mm perforated 304 SS<br>
+                    Filters: 3M charged synthetic<br>
+                    Electronics: UL-listed, 3×500W EC fans<br>
+                    Process: CNC + TIG weld (±0.5mm), modular bolt, 100% leak/test<br><br>
+
+                    <strong>7. Install & Maintenance</strong><br>
+                    Install: Crane (2–4h), 3-phase hookup<br>
+                    Maintenance: Filters every 6–12mo ($500–$1k/set), pre-filter wash, ionizer wipe monthly, annual service ~$2k<br>
+                    Life: 10–15 years, >80% recyclable<br><br>
+
+                    <strong>8. Cost Estimates</strong><br>
+                    Unit: $150k–$250k (volume target $100k)<br>
+                    Operating: $10k–$30k/year (24/7)<br>
+                    ROI: Carbon credits, sponsorships, health savings<br><br>
+
+                    <p>Prototype-ready. Reach out to 3M industrial filtration or local environmental engineers for next steps.</p>
                 </div>
             </div>
         </div>
@@ -175,9 +229,46 @@
             <div class="text-overlay">
                 <div class="holo-header">REDWATER FARM BASE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full farm content here - unchanged -->
                     <p>Buying a farm outside Redwater, Alberta (Sturgeon County) and building your own manufacturing facility/warehouse is smarter long-term than buying an existing one — custom layout, more land for expansion, lower cost, and potential ag/green incentives.</p>
-                    <!-- ... rest of farm content ... -->
+
+                    <strong>1. Land Acquisition</strong><br>
+                    Typical Price: $3,500–$6,000+/acre (recent listings ~$3,500/acre for good cropland).<br>
+                    Target: 50–100 acres (buffer + expansion + possible retained farming).<br>
+                    Cost: 80 acres at $3,500/acre = $280,000 (up to $480,000 high end).<br>
+                    Extras: Survey/legal $5k–$15k, clearing/roads $10k–$30k.<br>
+                    Total Land: $250,000–$500,000.<br><br>
+
+                    <strong>2. Rezoning Considerations</strong><br>
+                    Current: Agricultural zoning.<br>
+                    Target: Industrial Rural or M1/M2.<br>
+                    Process: Sturgeon County Planning application + hearings + reports (traffic, env, stormwater).<br>
+                    Timeline: 6–18 months (faster near Industrial Heartland).<br>
+                    Cost: Fees $5k–$10k + consultant reports $20k–$50k.<br>
+                    Total Rezoning: $30,000–$80,000.<br><br>
+
+                    <strong>3. Construction Costs (20,000 sq ft steel prefab)</strong><br>
+                    Cost per sq ft: $160–$300 CAD all-in.<br>
+                    Breakdown:<br>
+                    - Foundation & Site Work: $50,000–$100,000<br>
+                    - Steel Structure & Erection: $600,000–$900,000<br>
+                    - Interior Fit-Out: $800,000–$1,200,000<br>
+                    - Utilities (power, water, septic): $100,000–$200,000<br>
+                    - Permits, Engineering, Contingency: $200,000–$400,000<br><br>
+
+                    Total Build: $3,000,000–$5,000,000 CAD (mid-range $4M).<br><br>
+
+                    <strong>4. Other Startup Costs</strong><br>
+                    Equipment & Tooling: $500,000–$1,000,000<br>
+                    Utility Hookups/Infrastructure: $100,000–$300,000<br>
+                    Contingency & Soft Costs: 10–20%<br><br>
+
+                    <strong>Grand Total Estimate</strong><br>
+                    Land + Rezoning/Site Prep: $300,000–$600,000<br>
+                    Construction: $3,000,000–$5,000,000<br>
+                    Equipment & Misc Startup: $800,000–$1,500,000<br>
+                    Overall: $4,100,000–$7,100,000 CAD (~$3M–$5.2M USD)<br><br>
+
+                    <p>Cheaper long-term than buying pre-zoned industrial ($2M+ premiums). You control the design, get buffer land, qualify for Alberta grants (clean tech, manufacturing, SR&ED). Next Steps: Contact Sturgeon County Planning for pre-application advice. Check REALTOR.ca or LoopNet for farms near Hwy 28. Phase construction, use local steel suppliers, apply for grants. Risks: rezoning delays, rural utility costs. This is your launchpad — local roots, global impact.</p>
                 </div>
             </div>
         </div>
@@ -187,9 +278,55 @@
             <div class="text-overlay">
                 <div class="holo-header">FACILITY SCHEMATICS <span class="close" onclick="closeWin('schematics')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full schematics content here - unchanged -->
                     <p>Conceptual blueprints for the 20,000 sq ft Aetheris production facility on 80-acre Redwater farm. Rectangular steel prefab (100 ft × 200 ft, 20–25 ft eave, clear-span) — winter-tough, expandable, ~5–10 acres developed, 70+ acres buffer/future growth.</p>
-                    <!-- ... rest of schematics content ... -->
+
+                    <strong>1. Overall Site Plan (80-Acre Layout)</strong><br>
+                    Building positioned for Hwy 28 access, gravel driveway, parking/loading (~50 spots + truck bays), septic, well, stormwater swales/ponds, large farmland buffers. Setbacks ~30–50 m, tree lines preserved, solar tie-in space reserved.<br><br>
+
+                    <strong>2. Building Floor Plan</strong><br>
+                    Clear-span layout:<br>
+                    • Manufacturing/assembly bay — 60% (high bays, CNC/welding zones)<br>
+                    • Material storage & filter production — 20%<br>
+                    • Finished goods warehouse — 10%<br>
+                    • Offices, lunchroom, restrooms — 10%<br>
+                    • 2–4 loading docks + personnel entrances<br>
+                    Overhead crane rails, electrical panels, ventilation, fire separations marked.<br><br>
+
+                    <strong>3. Exterior Elevations</strong><br>
+                    Front/side/rear views:<br>
+                    • Insulated metal panels<br>
+                    • Large overhead doors<br>
+                    • Personnel doors<br>
+                    • Office windows<br>
+                    • Sloped roof (Alberta snow load pitch ~1:12)<br>
+                    Height: 25 ft eave, 30 ft peak. Minimalist, cost-effective.<br><br>
+
+                    <strong>4. Structural Cross-Section / Framing</strong><br>
+                    Steel skeleton:<br>
+                    • Primary rigid frames (I-beams/columns)<br>
+                    • Secondary purlins/girts<br>
+                    • Braced bays for wind/snow (Alberta Zone)<br>
+                    • Foundation piers/footings<br>
+                    • Roof/wall bracing<br>
+                    Clear-span up to 100 ft. CSA S16 steel, NBC-Alberta loads.<br><br>
+
+                    <strong>Submission Notes for Alberta</strong><br>
+                    • Development Permit: Site plan, rural fit, low traffic/env impact<br>
+                    • Building Permit: Floor plan, elevations, structural, energy code<br>
+                    • Electrical/Mechanical: Separate certified drawings<br>
+                    • Fire & Safety: Egress, sprinklers, fire lanes<br>
+                    • Environmental: Stormwater plan for fields/waterways<br><br>
+
+                    <p>Professional stamped drawings budget: $20,000–$60,000 CAD (Edmonton/Sturgeon engineers). This is the forge where Aetheris Units are born. The world needs clean air. We're building the factory that delivers it.</p>
+
+                    <div style="margin-top: 20px; text-align: center; font-size: 0.85rem;">
+                        <strong>Conceptual Schematics Links</strong><br>
+                        <a href="https://appliancefactoryparts.com" target="_blank" style="color:var(--nexus-blue);">Overall Tower Design</a> • 
+                        <a href="https://iqsdirectory.com" target="_blank" style="color:var(--nexus-blue);">Filtration Cross-Section</a> • 
+                        <a href="https://trionparts.com" target="_blank" style="color:var(--nexus-blue);">Exploded Assembly View</a> • 
+                        <a href="https://forum.projectvanlife.com" target="_blank" style="color:var(--nexus-blue);">Electrical & Power System</a> • 
+                        <a href="https://cadbull.com" target="_blank" style="color:var(--nexus-blue);">Structural Frame</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,27 +336,97 @@
             <div class="text-overlay">
                 <div class="holo-header">MACHINERY LIST <span class="close" onclick="closeWin('machinery')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full machinery content here - unchanged -->
                     <p>Core machinery required for Aetheris Unit production (initial 20,000 sq ft facility, 50–100 units/year capacity). Estimated costs in CAD (2025–2026 pricing, subject to quotes).</p>
-                    <!-- ... rest of machinery content ... -->
+
+                    <strong>CNC & Fabrication</strong><br>
+                    - 5-axis CNC Mill (Haas UMC-750 or equivalent): $250,000–$400,000<br>
+                    - CNC Lathe (Doosan Puma 2600): $150,000–$250,000<br>
+                    - Fiber Laser Cutter (6kW, 2m×4m bed): $200,000–$350,000<br>
+                    - Plasma Cutter (for thick SS/aluminum): $30,000–$60,000<br><br>
+
+                    <strong>Welding & Assembly</strong><br>
+                    - TIG Welder (Miller Dynasty 400): $15,000–$25,000 (×4 stations)<br>
+                    - Robotic Welding Arm (Fanuc or ABB, 6-axis): $120,000–$200,000<br>
+                    - Jib Cranes & Hoists (2-ton, 360°): $8,000–$15,000 each (×6)<br><br>
+
+                    <strong>Filter Production</strong><br>
+                    - Pleating Machine (for HEPA media): $80,000–$150,000<br>
+                    - Hot-Melt Glue Applicator: $40,000–$80,000<br>
+                    - Filter Testing Rig (DOP/PAO aerosol generator): $50,000–$100,000<br><br>
+
+                    <strong>Painting & Finishing</strong><br>
+                    - Powder Coating Line (oven + booth): $100,000–$200,000<br>
+                    - Sandblasting Cabinet (large): $15,000–$30,000<br><br>
+
+                    <strong>General Shop</strong><br>
+                    - Forklift (3-ton electric): $40,000–$60,000<br>
+                    - Workbenches & Tool Storage: $20,000–$40,000<br>
+                    - Air Compressor (50 HP): $15,000–$25,000<br>
+                    - Ventilation & Dust Collection: $50,000–$100,000<br><br>
+
+                    <strong>Total Machinery Estimate</strong><br>
+                    $1,000,000 – $2,000,000 CAD (mid-range ~$1.5M)<br>
+                    <br>
+                    <p>Next steps: Get quotes from Haas, Doosan, Miller, Fanuc, local Alberta suppliers. Lease options available for cash flow. Prioritize CNC/laser first for prototyping.</p>
                 </div>
             </div>
         </div>
 
-        <!-- BUSINESSES & SUPPLIERS -->
+        <!-- BUSINESSES & SUPPLIERS NEED LIST -->
         <div id="win-suppliers" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">BUSINESSES & SUPPLIERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full suppliers content here - unchanged -->
                     <p>Key businesses, material suppliers, and partners needed for Aetheris production. Emails and websites are clickable (mailto: for emails, new tab for sites). All are real companies — reach out with your project brief.</p>
-                    <!-- ... rest of suppliers content ... -->
+
+                    <strong>Filtration Media & Components</strong><br>
+                    - <strong>3M Filtration</strong> — HEPA/electrostatic media, ionizer tech<br>
+                      Email: <a href="mailto:filtration@mmm.com">filtration@mmm.com</a><br>
+                      Website: <a href="https://www.3m.com/3M/en_US/filtration-us/" target="_blank">3m.com/filtration</a><br><br>
+
+                    - <strong>Cummins Filtration (Fleetguard)</strong> — heavy-duty air filters, activated carbon<br>
+                      Email: <a href="mailto:info@cumminsfiltration.com">info@cumminsfiltration.com</a><br>
+                      Website: <a href="https://www.cumminsfiltration.com/" target="_blank">cumminsfiltration.com</a><br><br>
+
+                    <strong>Steel & Aluminum Suppliers</strong><br>
+                    - <strong>Russel Metals (Alberta)</strong> — perforated stainless, aluminum sheet<br>
+                      Email: <a href="mailto:info@russelmetals.com">info@russelmetals.com</a><br>
+                      Website: <a href="https://www.russelmetals.com/" target="_blank">russelmetals.com</a><br><br>
+
+                    - <strong>Earle M. Jorgensen Canada</strong> — structural aluminum & stainless<br>
+                      Email: <a href="mailto:info@emjmetals.com">info@emjmetals.com</a><br>
+                      Website: <a href="https://www.emjmetals.com/" target="_blank">emjmetals.com</a><br><br>
+
+                    <strong>Electronics & Fans</strong><br>
+                    - <strong>ebm-papst Canada</strong> — EC fans, low-noise blowers<br>
+                      Email: <a href="mailto:info@ca.ebmpapst.com">info@ca.ebmpapst.com</a><br>
+                      Website: <a href="https://www.ebmpapst.com/ca/en/" target="_blank">ebmpapst.com/ca</a><br><br>
+
+                    - <strong>RS Components / Allied Electronics</strong> — sensors, UL-listed components<br>
+                      Email: <a href="mailto:canada@rs-online.com">canada@rs-online.com</a><br>
+                      Website: <a href="https://ca.rs-online.com/" target="_blank">ca.rs-online.com</a><br><br>
+
+                    <strong>Engineering & Certification</strong><br>
+                    - <strong>Stantec (Edmonton office)</strong> — environmental/stormwater reports, rezoning support<br>
+                      Email: <a href="mailto:info@stantec.com">info@stantec.com</a><br>
+                      Website: <a href="https://www.stantec.com/en" target="_blank">stantec.com</a><br><br>
+
+                    - <strong>CSA Group (Alberta)</strong> — standards compliance, testing<br>
+                      Email: <a href="mailto:client.services@csagroup.org">client.services@csagroup.org</a><br>
+                      Website: <a href="https://www.csagroup.org/" target="_blank">csagroup.org</a><br><br>
+
+                    <strong>Other Strategic Partners</strong><br>
+                    - <strong>Daan Roosegaarde Studio</strong> — inspiration/possible collab on art-from-pollution<br>
+                      Email: <a href="mailto:info@studio-roosegaarde.net">info@studio-roosegaarde.net</a><br>
+                      Website: <a href="https://www.studioroosegaarde.net/" target="_blank">studioroosegaarde.net</a><br><br>
+
+                    <p>Start with 3M and Russel Metals — they’re local to Canada and can fast-track samples. Use LinkedIn for direct outreach. Track responses in the dashboard.</p>
                 </div>
             </div>
         </div>
 
         <div id="hud-dock">
-            <div id="ico-tracking" class="icon active" onclick="toggleWin('tracking')">📍</div>
+            <div id="ico-tracking" class="icon" onclick="toggleWin('tracking')">📍</div>
             <div id="ico-aetheris" class="icon" onclick="toggleWin('aetheris')">🌬️</div>
             <div id="ico-specs" class="icon" onclick="toggleWin('specs')">📐</div>
             <div id="ico-farmbuild" class="icon" onclick="toggleWin('farmbuild')">🌾</div>
@@ -234,19 +441,35 @@
         let landingPlayer, mainPlayer;
 
         function onYouTubeIframeAPIReady() {
-            landingPlayer = new YT.Player('landing-video', {
-                events: {
-                    'onReady': function(event) {
-                        event.target.mute(); // start muted for policy compliance
-                    }
+            landingPlayer = new YT.Player('landing-player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'vGXERI3UW3k',
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'mute': 1, 
+                    'loop': 1, 
+                    'playlist': 'vGXERI3UW3k', 
+                    'rel': 0, 
+                    'showinfo': 0,
+                    'modestbranding': 1 
                 }
             });
 
-            mainPlayer = new YT.Player('main-video', {
-                events: {
-                    'onReady': function(event) {
-                        // Do NOT play or unmute here - wait for user entry
-                    }
+            mainPlayer = new YT.Player('main-player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'W54Y0cn78NY',
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'mute': 1, 
+                    'loop': 1, 
+                    'playlist': 'W54Y0cn78NY', 
+                    'rel': 0, 
+                    'showinfo': 0,
+                    'modestbranding': 1 
                 }
             });
         }
@@ -254,8 +477,6 @@
         function initLanding() {
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
-
-            // Unmute and play on first real interaction (gate click)
             if (landingPlayer) {
                 landingPlayer.unMute();
                 landingPlayer.playVideo();
@@ -268,23 +489,25 @@
             setTimeout(() => {
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
-                
-                // Only start main video when user enters - unmuted
                 if (mainPlayer) {
                     mainPlayer.unMute();
                     mainPlayer.playVideo();
                 }
                 
-                // No auto-open - user must click an icon to open first frame
+                toggleWin('tracking');
+                setTimeout(() => toggleWin('aetheris'), 8000);
+                setTimeout(() => toggleWin('specs'), 16000);
+                setTimeout(() => toggleWin('farmbuild'), 24000);
+                setTimeout(() => toggleWin('schematics'), 32000);
+                setTimeout(() => toggleWin('machinery'), 40000);
+                setTimeout(() => toggleWin('suppliers'), 48000);
             }, 1000);
         }
 
         function toggleWin(id) {
-            // Hide all windows and remove active from all icons
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
             
-            // Show selected window and activate its icon
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
@@ -292,10 +515,8 @@
         }
 
         function closeWin(id) {
-            const win = document.getElementById('win-' + id);
-            const ico = document.getElementById('ico-' + id);
-            if (win) win.classList.remove('active');
-            if (ico) ico.classList.remove('active');
+            document.getElementById('win-' + id).classList.remove('active');
+            document.getElementById('ico-' + id).classList.remove('active');
         }
 
         function closeAllWindows() {
