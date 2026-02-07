@@ -3,286 +3,349 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Olympus Aether Network Facility Simulator</title>
+    <title>Olympus | Dutchman Terminal</title>
     <style>
         :root {
-            --cyan: #00f2ff;
-            --gold: #d4af37;
-            --purple-shader: rgba(26, 0, 51, 0.82);
-            --glass: rgba(8, 8, 25, 0.45);
-            --border: rgba(0, 242, 255, 0.35);
-            --glow-c: 0 0 40px rgba(0, 242, 255, 0.75);
-
-            /* Label Colors */
-            --c-land: #00D2FF; --c-factory: #A259FF; --c-warehouse: #FFF5E1;
-            --c-units: #FF4B2B; --c-companies: #00FF87;
+            --nexus-blue: #00d4ff;
+            --neon-purple: #bc13fe;
+            --emerald: #00ff88;
+            --bloom-green: 0 0 15px var(--emerald), 0 0 30px rgba(0, 255, 136, 0.5);
+            --glass: rgba(0, 10, 15, 0.3);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
-        body, html { 
-            width:100%; height:100%; overflow:hidden; 
-            background:#000; font-family: 'Courier New', monospace; 
-            color:var(--cyan); touch-action: manipulation; 
+        body, html { width:100%; height:100%; overflow:hidden; background:#000; font-family: 'Arial Black', sans-serif; color: white; }
+
+        /* --- ENTRY GATE --- */
+        #entry-gate {
+            position: fixed; inset: 0; z-index: 9999; background: #000;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+        }
+        .gate-btn {
+            padding: 20px 40px; border: 1px solid var(--nexus-blue); border-radius: 100px;
+            color: var(--nexus-blue); letter-spacing: 10px; font-size: 0.8rem;
+            text-shadow: 0 0 10px var(--nexus-blue); animation: breathe 3s infinite;
         }
 
-        /* Rain Effect */
-        #rain-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        .drop { 
-            position: absolute; background: linear-gradient(transparent, var(--cyan)); 
-            width: 1.5px; height: 60px; top: -80px; 
-            animation: fall linear infinite; opacity: 0.25; 
+        /* --- LANDING STAGE --- */
+        #landing-stage {
+            position: fixed; inset: 0; z-index: 9000; background: #000;
+            display: none; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer;
+            padding-bottom: 8vh;
         }
-        @keyframes fall { to { transform: translateY(110vh); } }
+        .full-vid { 
+            position: absolute; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; 
+        }
+        .abyss-btn {
+            position: relative; z-index: 9001; 
+            padding: 18px 50px; 
+            border-radius: 60px;
+            border: 2px solid var(--nexus-blue);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            color: var(--nexus-blue);
+            letter-spacing: 8px;
+            font-size: 1rem;
+            text-shadow: 0 0 15px var(--nexus-blue);
+            cursor: pointer;
+            opacity: 0.85;
+            transition: all 0.3s ease;
+        }
+        .abyss-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
 
-        /* Main UI */
-        #container { 
-            position: relative; z-index: 10; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; text-align: center; padding: 16px; 
+        /* --- MAIN TERMINAL --- */
+        #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
+        #bg-shield { position: absolute; inset: 0; z-index: 5; }
+
+        /* --- ORACLE CIRCLE (CLICKABLE) --- */
+        #win-oracle {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            width: 280px; height: 280px; border-radius: 50%;
+            border: 2px solid rgba(0, 212, 255, 0.4); 
+            overflow: hidden; z-index: 50; opacity: 0.6; cursor: pointer;
+        }
+        .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); pointer-events: none; }
+
+        /* --- HOLOFRAMES (Glass Aesthetic) --- */
+        .holo-window {
+            position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+            width: min(520px, 92vw); height: 75vh;
+            background: var(--glass); border: 3px solid var(--neon-purple);
+            box-shadow: 0 0 25px rgba(188, 19, 254, 0.4);
+            border-radius: 40px; backdrop-filter: blur(25px);
+            z-index: 200; display: none; flex-direction: column; overflow: hidden;
+        }
+        .holo-window.active { display: flex; animation: zoomIn 0.5s ease-out forwards; }
+        .holo-window.minimized { height: 60px; overflow: hidden; opacity: 0.7; }
+
+        .video-content { position: absolute; inset: 0; z-index: 1; opacity: 0.4; overflow: hidden; }
+        .video-content iframe { width: 100%; height: 100%; border: none; }
+
+        .text-overlay {
+            position: relative; z-index: 2; height: 100%; padding: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent, rgba(0,0,0,0.9));
         }
 
-        /* Bottom Icon Panel */
-        #icon-panel { 
-            position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(0, 0, 0, 0.8);
-            display: flex; justify-content: center; align-items: center; gap: 40px; z-index: 100;
+        .holo-header {
+            color: var(--emerald); text-shadow: var(--bloom-green);
+            letter-spacing: 4px; font-size: 1.5rem; text-align: center; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .icon { cursor: pointer; font-size: 24px; color: #00d4ff; }
-        .icon:hover { color: #ffffff; }
 
-        /* Glass Holoframe Modals */
-        .holo-modal { 
-            display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 800px;
-            background: var(--glass); border: 1px solid var(--border); border-radius: 12px; 
-            backdrop-filter: blur(14px); box-shadow: var(--glow-c); z-index: 200; overflow-y: auto; padding: 20px; 
-            max-height: 80vh; transition: max-height 0.3s ease, opacity 0.3s ease; 
-        }
-        .holo-modal.minimized { max-height: 60px; overflow: hidden; opacity: 0.7; }
-        .holo-header { 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; 
-        }
-        .holo-title { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
-        .minimize-btn { cursor: pointer; color: var(--cyan); font-size: 1.5rem; }
-        .holo-content { font-size: 0.9rem; line-height: 1.4; }
+        .minimize-btn { cursor: pointer; color: var(--nexus-blue); font-size: 1.5rem; }
 
-        /* Close Button */
+        .product-scroll {
+            overflow-y: auto; text-align: left; color: var(--nexus-blue);
+            font-family: 'Courier New', monospace; font-size: 0.9rem;
+            padding-right: 10px; scrollbar-width: thin;
+            scrollbar-color: var(--neon-purple) transparent;
+            flex-grow: 1;
+        }
+
         .close { position: absolute; top: 10px; right: 10px; font-size: 24px; cursor: pointer; color: #ff3366; }
 
-        /* 3D Canvas */
-        canvas { position: fixed; top: 0; left: 0; z-index: 0; }
+        #hud-dock {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 40px; z-index: 1000;
+        }
+        .icon {
+            width: 65px; height: 65px; border: 2px solid var(--nexus-blue);
+            border-radius: 20px; background: rgba(0, 212, 255, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.8rem; transition: 0.4s;
+        }
+        .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); }
+
+        @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @keyframes zoomIn { from { opacity: 0; transform: translateX(-50%) scale(0.9); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
     </style>
 </head>
 <body>
 
-<div id="rain-container"></div>
-
-<div id="container">
-    <!-- 3D Scene will be rendered here -->
+<div id="entry-gate" onclick="initLanding()">
+    <div class="gate-btn">INITIATE SIGNAL</div>
 </div>
 
-<div id="icon-panel">
-    <div class="icon" onclick="toggleHolo('land')">🌍</div>
-    <div class="icon" onclick="toggleHolo('factory')">🏭</div>
-    <div class="icon" onclick="toggleHolo('warehouse')">📦</div>
-    <div class="icon" onclick="toggleHolo('units')">🛡️</div>
-    <div class="icon" onclick="toggleHolo('companies')">🤝</div>
+<div id="landing-stage" onclick="enterTerminal()">
+    <iframe id="battle-player" class="full-vid" 
+            src="https://www.youtube.com/embed/H7FoA6mrOtU?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=H7FoA6mrOtU&rel=0" 
+            frameborder="0" allow="autoplay"></iframe>
+    <div class="abyss-btn">ENTER THE ABYSS</div>
 </div>
 
-<!-- Glass Holoframe Modals -->
-<div id="land-holo" class="holo-modal">
-    <div class="holo-header">
-        <span class="holo-title">Land Acquisition & Preparation</span>
-        <span class="minimize-btn" onclick="minimizeHolo('land')">-</span>
+<div id="main-terminal">
+    <div id="bg-shield" onclick="closeAllWindows()"></div>
+
+    <iframe class="full-vid" src="https://www.youtube.com/embed/PEaZ5XUe0Mk?autoplay=1&mute=1&controls=0&loop=1&playlist=PEaZ5XUe0Mk" frameborder="0" style="opacity:0.35"></iframe>
+
+    <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
+        <video class="oracle-mp4" autoplay loop muted playsinline>
+            <source src="https://raw.githubusercontent.com/highland88999-commits/The-Flying-Dutchman/main/hailuo_1768837219.mp4" type="video/mp4">
+        </video>
     </div>
-    <span class="close" onclick="closeHolo('land')">&times;</span>
-    <div class="holo-content">
-        <p>Detailed Information: 80-acre farm outside Redwater, Alberta (Sturgeon County). Proximity to Hwy 28 for logistics. Land type: Agricultural/cultivated farmland, flat terrain suitable for development. Acquisition process: Engage real estate brokers like RE/MAX Real Estate Central Alberta or Marcel LeBlanc Real Estate Inc. Estimated purchase price: $250,000–$500,000 CAD ($3,500–$6,000/acre). Broker commission: 5–6% (~$15,000–$30,000). Additional: Survey/legal fees $5,000–$15,000; site clearing/gravel roads $10,000–$30,000. Rezoning from ag to industrial: Application to Sturgeon County Planning ($5,000–$10,000 fees + $20,000–$50,000 consultant reports). Timeline: 6–18 months. Environmental buffers: Retain 70+ acres as green zones. Total: $300,000–$600,000 CAD.</p>
+
+    <!-- Aetheris Concept Holoframe -->
+    <div id="win-aetheris" class="holo-window">
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=1&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">AETHERIS CONCEPT<span class="minimize-btn" onclick="minimizeWin('aetheris')">-</span></div>
+            <span class="close" onclick="closeWin('aetheris')">&times;</span>
+            <div class="product-scroll">
+                <p>Hey there, Olympus. That lock screen concept you shared? It's pure fire. A sleek 3M-branded cylindrical tower on your phone, telling time while begging to be "plugged in" for clean air. It's hilarious and brilliant—turning a low-battery warning into a reminder that clean air is the real essential resource we're running low on.</p>
+
+                <p>That's exactly what the Global Air Purifiers vision is about: massive outdoor towers that act like city lungs—sucking in smog, PM2.5, dust, VOCs, and breathing out purified air to create breathable zones in polluted urban hellscapes. We're not just cleaning air; we're building breathing sanctuaries.</p>
+
+                <strong>Real-World Proof Points</strong><br><br>
+
+                <strong>Smog Free Tower (Daan Roosegaarde):</strong> 7 meters tall, the world's first outdoor air purifier. Positive ionization (no ozone), cleans 30,000 m³/hour—enough for a park. Seen in Rotterdam, Beijing, Kraków, Abu Dhabi. Bonus: turns captured pollution into jewelry diamonds. One ring = 1,000 m³ cleaned. Art from poison.<br><br>
+
+                <strong>Xi'an Smog Tower (China):</strong> Over 100 meters tall, the biggest ever built. Solar-heated base creates natural updraft, multi-layer filters drop PM2.5 noticeably across square kilometers.<br><br>
+
+                <strong>Others:</strong> India's 30m+ towers in Delhi parks, Russia's tree-like HyperFilter concepts, bio-moss integrations. Proof that hyper-local clean-air bubbles are real and scaling.<br><br>
+
+                Your 3M tower mockup mashes indoor Filtrete tech with these giants—imagine fleets of them across cities, literally breathing for us. Air as the new oil, and you're the refinery. Let's build it.
+            </div>
+        </div>
+    </div>
+
+    <!-- Production Specs Holoframe -->
+    <div id="win-specs" class="holo-window">
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=1&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">3M ECOTOWER SPECS<span class="minimize-btn" onclick="minimizeWin('specs')">-</span></div>
+            <span class="close" onclick="closeWin('specs')">&times;</span>
+            <div class="product-scroll">
+                <p>Hey Olympus, here's the full production-ready blueprint for your 3M EcoTower (Model ET-GAP-700). I pulled from real-world giants like the Smog Free Tower and Xi'an, then layered in 3M's Filtrete tech scaled for the outdoors. This is engineered to be manufacturable, modular, and ready for urban deployment.</p>
+
+                <strong>1. Overview</strong><br>
+                - Product Name: 3M EcoTower Global Air Purifier (Model: ET-GAP-700)<br>
+                - Purpose: Suck in dirty city air, strip out PM2.5/PM10/VOCs/smoke/allergens/smog, blow out clean zones.<br>
+                - Target: Parks, plazas, industrial edges, traffic choke points. Network 5–10 per km² for real coverage.<br>
+                - Features: Modular cylinder, low-energy, solar option, IoT monitoring via 3M app.<br>
+                - Compliance: EU REACH/RoHS, WHO output standards, zero ozone.<br><br>
+
+                <strong>2. Dimensions & Structure</strong><br>
+                - Height: 7m total (5m filter column + 2m base) – scalable to 10m<br>
+                - Diameter: 2.5m base → 2m top (tapered aero)<br>
+                - Weight: ~1,200 kg loaded<br>
+                - Build: Aluminum 6061-T6 frame + perforated 304 stainless panels (1–2mm holes)<br>
+                - Base: Anti-vibe mounts + anchors for 3m×3m×30cm concrete pad<br>
+                - Modularity: Ships in 4 bolt-together sections (M10, 50 Nm)<br>
+                - Durability: IP65, -20°C to 50°C, UV-resistant silver/gray powder coat<br><br>
+
+                <strong>3. Filtration System</strong><br>
+                - Tech: 3M electrostatic + positive ionization + HEPA hybrid (no ozone)<br>
+                  Stage 1: Washable SS pre-filter (10–20μm)<br>
+                  Stage 2: 5–10kV ionizer charges ultra-fines<br>
+                  Stage 3: HEPA H14 (99.97% @ 0.3μm) + carbon for VOCs/odors<br>
+                  Stage 4: Optional UV-C (254nm, 20W) pathogen kill<br>
+                - Filters: 6× 1.5m×1m pleated panels (20m² each), 3M Filtrete MERV 16, 6–12 month life<br>
+                - Airflow: 360° base/side intake → upward → diffused top exhaust<br><br>
+
+                <strong>4. Power & Energy</strong><br>
+                - Consumption: 1,170W nominal / 1,500W peak<br>
+                - Source: 110–240V grid + optional 5kW solar + passive greenhouse heat<br>
+                - Backup: 10kWh Li-ion (4–6h runtime)<br>
+                - Noise: <55 dB @ 1m (variable fans)<br><br>
+
+                <strong>5. Performance</strong><br>
+                - Capacity: 30,000 m³/h (scalable to 100k)<br>
+                - Coverage: 1–3 km² bubble, 15–20% PM2.5 drop<br>
+                - Efficiency: 80–95% removal (EN 1822), AQI <50 output<br>
+                - Monitoring: PM2.5/CO2/VOC sensors + app<br>
+                - Byproducts: Compressed cubes (art/jewelry) or safe disposal<br><br>
+
+                <strong>6. Materials & Manufacturing</strong><br>
+                - Frame: Anodized 6061-T6 aluminum<br>
+                - Panels: 1.5mm perforated 304 SS<br>
+                - Filters: 3M charged synthetic<br>
+                - Electronics: UL-listed, 3×500W EC fans<br>
+                - Process: CNC + TIG weld (±0.5mm), modular bolt, 100% leak/test<br><br>
+
+                <strong>7. Install & Maintenance</strong><br>
+                - Install: Crane (2–4h), 3-phase hookup<br>
+                - Maintenance: Filters every 6–12mo ($500–$1k/set), pre-filter wash, ionizer wipe monthly, annual service ~$2k<br>
+                - Life: 10–15 years, >80% recyclable<br><br>
+
+                <strong>8. Cost Estimates</strong><br>
+                - Unit: $150k–$250k (volume target $100k)<br>
+                - Operating: $10k–$30k/year (24/7)<br>
+                - ROI: Carbon credits, sponsorships, health savings<br><br>
+
+                <p>Ready to prototype? Hit up 3M industrial filtration or local environmental engineers. Need CAD, tweaks, or deeper breakdowns? Just say the word.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farm + Build Cost Holoframe -->
+    <div id="win-farmbuild" class="holo-window">
+        <div class="video-content">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=1&controls=0&loop=1" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <div class="text-overlay">
+            <div class="holo-header">FARM + BUILD APPROACH<span class="minimize-btn" onclick="minimizeWin('farmbuild')">-</span></div>
+            <span class="close" onclick="closeWin('farmbuild')">&times;</span>
+            <div class="product-scroll">
+                <p>Hey Olympus, buying an 80-acre farm outside Redwater and building your own facility there instead of buying a pre-made warehouse is a brilliant move. You get full design control, more land for expansion, and a lower entry cost long-term—perfect for scaling the EcoTower network while keeping some farming buffer.</p>
+
+                <p>Here's the breakdown tailored to Alberta 2025–2026 numbers (CAD; convert ~1.35:1 to USD). We're talking a 20,000 sq ft steel prefab setup—enough to start producing 10–50 units/year.</p>
+
+                <strong>1. Land Acquisition</strong><br>
+                Farmland near Redwater runs $3,500–$6,000+/acre. For 80 acres (buffer + expansion): $280,000 at $3,500/acre (up to $480,000 at higher end).<br>
+                Why cheaper? Ag land is way below industrial-zoned prices ($39k–$225k/acre).<br>
+                Extras: Survey/legal $5k–$15k, clearing/roads $10k–$30k.<br>
+                Total Land: $250k–$500k.<br><br>
+
+                <strong>2. Rezoning & Planning</strong><br>
+                Current: Agricultural zoning.<br>
+                Target: Industrial (M1/M2 or Rural Industrial).<br>
+                Process: Sturgeon County application + hearings + reports (traffic, env, stormwater).<br>
+                Timeline: 6–18 months (faster near Industrial Heartland).<br>
+                Cost: Fees $5k–$10k + consultants $20k–$50k.<br>
+                Total: $30k–$80k.<br><br>
+
+                <strong>3. Construction Costs</strong><br>
+                20,000 sq ft steel prefab: $160–$300/sq ft all-in (foundation, shell, insulation, utilities, fit-out).<br>
+                Breakdown:<br>
+                - Foundation/site work: $50k–$100k<br>
+                - Steel & erection: $600k–$900k<br>
+                - Interior (bays, offices, racks): $800k–$1.2M<br>
+                - Utilities (power, septic): $100k–$200k<br>
+                - Permits/contingency: $200k–$400k<br><br>
+
+                Total Build: $3M–$5M CAD (mid $4M).<br><br>
+
+                <strong>4. Other Startup</strong><br>
+                Equipment/tooling: $500k–$1M<br>
+                Utility upgrades: $100k–$300k<br>
+                Contingency/soft costs: 10–20%<br><br>
+
+                <strong>Grand Total (Farm + Build)</strong><br>
+                Land + Rezone: $300k–$600k<br>
+                Construction: $3M–$5M<br>
+                Equipment/Startup: $800k–$1.5M<br>
+                Overall: $4.1M–$7.1M CAD (~$3M–$5.2M USD)<br><br>
+
+                <p>This beats buying pre-zoned industrial land ($2M+ just for warehouse + lot). You own the design, get expansion room, and may qualify for Alberta green-tech or ag grants. Next step? Contact Sturgeon County Planning for rezoning pre-app. Check REALTOR.ca or LoopNet for farms near Hwy 28.</p>
+
+                <p>Savings: Phase the build (shell first), use local steel suppliers, chase SR&ED credits for R&D. Risks: Rezoning delays, rural utility costs. This is your launchpad—local roots, global reach, all for your son. Tell me acreage or budget, and I'll tighten the numbers.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="hud-dock">
+        <div class="icon" id="ic-aetheris" onclick="toggleWin('aetheris')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">🌬️</div>
+        <div class="icon" id="ic-specs" onclick="toggleWin('specs')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">📐</div>
+        <div class="icon" id="ic-farmbuild" onclick="toggleWin('farmbuild')" style="border-color:var(--emerald); box-shadow:var(--bloom-green);">🌾</div>
     </div>
 </div>
 
-<div id="factory-holo" class="holo-modal">
-    <div class="holo-header">
-        <span class="holo-title">Production Factory</span>
-        <span class="minimize-btn" onclick="minimizeHolo('factory')">-</span>
-    </div>
-    <span class="close" onclick="closeHolo('factory')">&times;</span>
-    <div class="holo-content">
-        <p>Detailed Information: 20,000 sq ft steel prefab building on 5–10 acres of the 80-acre site. Layout: Manufacturing bays (60% for CNC/welding/assembly of towers), offices/lunchroom (10%), material handling zones. Height: 20–25 ft eaves for cranes. Construction: Steel kit/shell $500,000–$900,000; full build (foundation, utilities, fit-out) $3,000,000–$5,000,000 CAD. Contractors: Alpha Construction Inc. or Whitson Contracting Ltd. Equipment: CNC plasma cutter ($50,000–$150,000), TIG welder ($5,000–$10,000), powder coating booth ($20,000–$50,000), hydraulic press brake ($30,000–$80,000), overhead crane ($20,000–$50,000). Total startup: $4,100,000–$7,100,000 CAD including land. Schematics: Site plan, floor plan (open clear-span), elevations (insulated metal panels), structural cross-sections (I-beams for snow loads).</p>
-    </div>
-</div>
-
-<div id="warehouse-holo" class="holo-modal">
-    <div class="holo-header">
-        <span class="holo-title">Warehouse</span>
-        <span class="minimize-btn" onclick="minimizeHolo('warehouse')">-</span>
-    </div>
-    <span class="close" onclick="closeHolo('warehouse')">&times;</span>
-    <div class="holo-content">
-        <p>Detailed Information: Integrated within the 20,000 sq ft facility (30% dedicated to storage: raw materials, filters, finished EcoTowers). Features: Racking systems for 1,200kg towers, loading docks (2–4 bays for trucks), climate-controlled zones for electronics. Built on same 80-acre property, adjacent to manufacturing for efficiency. Cost: Included in factory build (~$900,000–$1,500,000 allocation). Suppliers: Russel Metals for steel racks. Schematics: Floor plan shows storage zones with aisles for forklifts, site plan indicates yard space for overflow, elevations include dock doors, structural details for heavy-load flooring.</p>
-    </div>
-</div>
-
-<div id="units-holo" class="holo-modal">
-    <div class="holo-header">
-        <span class="holo-title">Air Purifier Units</span>
-        <span class="minimize-btn" onclick="minimizeHolo('units')">-</span>
-    </div>
-    <span class="close" onclick="closeHolo('units')">&times;</span>
-    <div class="holo-content">
-        <p>Detailed Information: 3M EcoTower specs: 7m height, 2.5m base diameter, 1,200kg. Materials: Aluminum alloy frame ($2,800), stainless panels ($800), HEPA filters/ionizer ($4,000), solar+battery ($14,000), electronics/fans ($2,300), weatherproof coating ($5,000), misc ($5,000). Per-unit cost: Materials $33,900, labor $3,600, machinery share $6,200, total ~$52,400 CAD. Parts list: 6x HEPA panels (MERV 16), 3x 500W fans, 10kWh Li-ion battery, sensors (PM2.5/CO2/VOC). Schematics: Overall cylinder design, filtration cross-section (pre-filter→ionizer→HEPA→UV-C), exploded assembly (4 modular sections), electrical (solar wiring), structural frame (anchors/bracing). Production: 30,000 m³/h capacity, ozone-free.</p>
-    </div>
-</div>
-
-<div id="companies-holo" class="holo-modal">
-    <div class="holo-header">
-        <span class="holo-title">Companies Required</span>
-        <span class="minimize-btn" onclick="minimizeHolo('companies')">-</span>
-    </div>
-    <span class="close" onclick="closeHolo('companies')">&times;</span>
-    <div class="holo-content">
-        <p>Detailed Information: Real Estate: RE/MAX Real Estate Central Alberta ($15k–$25k commission). Planning: MVH Urban Planning ($20k–$40k for rezoning). Construction: Alpha Construction Inc. ($3M–$4.5M build). Engineering: Arrow Engineering ($25k–$50k drawings). Machinery: Leavitt Machinery ($200k–$400k equipment). Materials: Russel Metals ($40k–$80k metals). Environmental: North Shore Consultants ($15k–$30k assessments). Utilities: EPCOR ($50k–$150k hookups). All Edmonton/Sturgeon-based for local efficiency. Total engagement: Aligns with $4.1M–$7.1M project cost.</p>
-    </div>
-</div>
-
-<script type="importmap">
-    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
-</script>
-
-<script type="module">
-    import * as THREE from 'three';
-
-    // --- Setup ---
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('container').appendChild(renderer.domElement);
-
-    const loader = new THREE.TextureLoader();
-
-    // --- Lighting ---
-    const light = new THREE.PointLight(0xffffff, 100, 100);
-    light.position.set(10, 10, 10);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040));
-
-    // --- Ground (Farm Land) ---
-    const groundGeom = new THREE.PlaneGeometry(100, 100);
-    const groundMat = new THREE.MeshPhongMaterial({ color: 0x228B22 }); // Green field
-    const ground = new THREE.Mesh(groundGeom, groundMat);
-    ground.rotation.x = -Math.PI / 2;
-    scene.add(ground);
-
-    // --- Stages Models ---
-    const stages = [];
-    stages[0] = new THREE.Group(); // Empty land (just ground)
-
-    // Stage 1: Site Prep (cleared area, fences)
-    const stage1 = new THREE.Group();
-    const clearedGeom = new THREE.PlaneGeometry(30, 50);
-    const clearedMat = new THREE.MeshPhongMaterial({ color: 0x8B4513 }); // Dirt
-    const cleared = new THREE.Mesh(clearedGeom, clearedMat);
-    cleared.rotation.x = -Math.PI / 2;
-    cleared.position.set(0, 0.01, 0);
-    stage1.add(cleared);
-    stages[1] = stage1;
-
-    // Stage 2: Construction (frame)
-    const stage2 = new THREE.Group();
-    stage2.add(cleared.clone());
-    const frameGeom = new THREE.BoxGeometry(20, 5, 40);
-    const frameMat = new THREE.MeshPhongMaterial({ color: 0x808080, wireframe: true });
-    const frame = new THREE.Mesh(frameGeom, frameMat);
-    frame.position.set(0, 2.5, 0);
-    stage2.add(frame);
-    stages[2] = stage2;
-
-    // Stage 3: Completed Facility
-    const stage3 = new THREE.Group();
-    stage3.add(cleared.clone());
-    const buildingGeom = new THREE.BoxGeometry(20, 5, 40);
-    const buildingMat = new THREE.MeshPhongMaterial({ color: 0xA9A9A9 });
-    const building = new THREE.Mesh(buildingGeom, buildingMat);
-    building.position.set(0, 2.5, 0);
-    stage3.add(building);
-    stages[3] = stage3;
-
-    // Stage 4: Operational (with units/towers)
-    const stage4 = new THREE.Group();
-    stage4.add(building.clone());
-    const towerGeom = new THREE.CylinderGeometry(0.5, 0.5, 3, 32);
-    const towerMat = new THREE.MeshPhongMaterial({ color: 0x00d4ff });
-    for (let i = 0; i < 5; i++) {
-        const tower = new THREE.Mesh(towerGeom, towerMat);
-        tower.position.set(-5 + i * 3, 1.5, -10);
-        stage4.add(tower);
+<script>
+    function initLanding() {
+        document.getElementById('entry-gate').style.display = 'none';
+        document.getElementById('landing-stage').style.display = 'flex';
     }
-    stages[4] = stage4;
 
-    let currentStage = stages[0];
-    scene.add(currentStage);
-
-    // --- Camera ---
-    camera.position.set(0, 10, 30);
-    camera.lookAt(0, 0, 0);
-
-    // --- Render Loop ---
-    function animate() {
-        requestAnimationFrame(animate);
-        currentStage.rotation.y += 0.001;
-        renderer.render(scene, camera);
+    function enterTerminal() {
+        document.getElementById('landing-stage').style.display = 'none';
+        document.getElementById('main-terminal').style.display = 'block';
+        toggleWin('aetheris'); // Concept first
+        setTimeout(() => toggleWin('specs'), 8000); // Specs ~8s
+        setTimeout(() => toggleWin('farmbuild'), 16000); // Farm+Build ~16s
     }
-    animate();
 
-    // --- Rain Effect ---
-    function createRain() {
-        const container = document.getElementById('rain-container');
-        if (container.children.length > 0) return;
-        for (let i = 0; i < 60; i++) {
-            const drop = document.createElement('div');
-            drop.className = 'drop';
-            drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = (Math.random() * 0.6 + 0.8) + 's';
-            drop.style.animationDelay = Math.random() * 3 + 's';
-            container.appendChild(drop);
-        }
-    }
-    createRain();
-
-    // --- Holoframe Functions ---
-    const holoStates = {}; // Track minimized state
-
-    function toggleHolo(id) {
-        const modal = document.getElementById(`${id}-holo`);
-        if (modal.style.display === 'block') {
-            closeHolo(id);
+    function toggleWin(id) {
+        const win = document.getElementById('win-' + id);
+        if (win.classList.contains('active')) {
+            win.classList.remove('active');
         } else {
-            modal.style.display = 'block';
-            holoStates[id] = false; // Not minimized
-            modal.classList.remove('minimized');
+            document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
+            win.classList.add('active');
         }
     }
 
-    function minimizeHolo(id) {
-        const modal = document.getElementById(`${id}-holo`);
-        holoStates[id] = !holoStates[id];
-        if (holoStates[id]) {
-            modal.classList.add('minimized');
-        } else {
-            modal.classList.remove('minimized');
-        }
+    function minimizeWin(id) {
+        const win = document.getElementById('win-' + id);
+        win.classList.toggle('minimized');
     }
 
-    function closeHolo(id) {
-        const modal = document.getElementById(`${id}-holo`);
-        modal.style.display = 'none';
-        holoStates[id] = false;
+    function closeWin(id) {
+        const win = document.getElementById('win-' + id);
+        win.classList.remove('active', 'minimized');
     }
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    function closeAllWindows() {
+        document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active', 'minimized'));
+    }
 </script>
 </body>
 </html>
