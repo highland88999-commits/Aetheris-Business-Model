@@ -16,8 +16,8 @@
         /* SEARCH & DICTIONARY PREVENTION */
         * { 
             margin:0; padding:0; box-sizing:border-box; 
-            -webkit-user-select: none; /* Prevents text selection/dictionary */
-            -webkit-touch-callout: none; /* Prevents callout menu on long press */
+            -webkit-user-select: none; 
+            -webkit-touch-callout: none; 
             user-select: none; 
         }
 
@@ -104,13 +104,91 @@
             </video>
         </div>
 
-        <div id="win-tracking" class="holo-window"><div class="text-overlay"><div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div><div class="product-scroll"><iframe src="https://olympus-aetheris.vercel.app/"></iframe></div></div></div>
-        <div id="win-aetheris" class="holo-window"><div class="text-overlay"><div class="holo-header">VISION <span class="close" onclick="closeWin('aetheris')">×</span></div><div class="product-scroll"><p><b>Aetheris:</b> The urban lung. 30,000m³/h filtration. Turning smog into sanctuary using positive ionization.</p></div></div></div>
-        <div id="win-specs" class="holo-window"><div class="text-overlay"><div class="holo-header">SPECS <span class="close" onclick="closeWin('specs')">×</span></div><div class="product-scroll"><p><b>Model ET-GAP-700:</b> 7m height, HEPA H14, 1,170W nominal. Solar-integrated power logic.</p></div></div></div>
-        <div id="win-farmbuild" class="holo-window"><div class="text-overlay"><div class="holo-header">FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div><div class="product-scroll"><p><b>Redwater Base:</b> 80-acre rural site. 20,000 sq ft manufacturing capacity. $7.1M CAD CAPEX target.</p></div></div></div>
-        <div id="win-schematics" class="holo-window"><div class="text-overlay"><div class="holo-header">PLANS <span class="close" onclick="closeWin('schematics')">×</span></div><div class="product-scroll"><p>Steel prefab skeleton. Clear-span assembly zones. Stamped for Alberta NBC building codes.</p></div></div></div>
-        <div id="win-machinery" class="holo-window"><div class="text-overlay"><div class="holo-header">TOOLS <span class="close" onclick="closeWin('machinery')">×</span></div><div class="product-scroll"><p>Haas 5-axis CNC. 6kW Fiber Laser. Robotic Welding cells. Filter pleating lines.</p></div></div></div>
-        <div id="win-suppliers" class="holo-window"><div class="text-overlay"><div class="holo-header">PARTNERS <span class="close" onclick="closeWin('suppliers')">×</span></div><div class="product-scroll"><p>3M Filtration, Russel Metals, ebm-papst, Stantec Engineering. Tier 1 supply chain locked.</p></div></div></div>
+        <div id="win-tracking" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
+                <div class="product-scroll"><iframe src="https://olympus-aetheris.vercel.app/"></iframe></div>
+            </div>
+        </div>
+
+        <div id="win-aetheris" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
+                <div class="product-scroll">
+                    <p>It began with a single image: a sleek 3M-branded cylindrical tower. Air is life, and cities are suffocating. Aetheris Units are the answer.</p>
+                    <p>Towering outdoor purifiers that inhale smog and exhale purified air, creating breathable sanctuaries in urban choke zones. Inspired by Daan Roosegaarde's Smog Free Towers cleaning 30,000 m³/hour.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="win-specs" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
+                <div class="product-scroll">
+                    <strong>Model ET-GAP-700</strong><br>
+                    - Height: 7m | Weight: ~1,200kg<br>
+                    - Frame: Aluminum 6061-T6 + 304 Stainless Panels<br>
+                    - Filtration: 3M Electrostatic + HEPA H14 + UV-C<br>
+                    - Capacity: 30,000 m³/h output<br>
+                    - Power: 1,170W nominal (Solar Compatible)
+                </div>
+            </div>
+        </div>
+
+        <div id="win-farmbuild" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
+                <div class="product-scroll">
+                    <strong>Redwater Farm Base (Sturgeon County)</strong><br>
+                    - Land: 80 Acres at ~$3,500/acre<br>
+                    - Build: 20,000 sq ft Steel Prefab<br>
+                    - Cost Breakdown: Land ($280k) + Build ($4M) + Equipment ($1.5M)<br>
+                    - Total Project: $4.1M – $7.1M CAD
+                </div>
+            </div>
+        </div>
+
+        <div id="win-schematics" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">PLANS <span class="close" onclick="closeWin('schematics')">×</span></div>
+                <div class="product-scroll">
+                    <strong>100ft x 200ft Facility Layout:</strong><br>
+                    - 60% Assembly Bay (High-ceiling)<br>
+                    - 20% Filter Lab & Storage<br>
+                    - 10% Finished Goods Warehouse<br>
+                    - 10% Admin & Design Suite<br>
+                    - Stamped for Alberta NBC Snow/Wind loads.
+                </div>
+            </div>
+        </div>
+
+        <div id="win-machinery" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">TOOLS <span class="close" onclick="closeWin('machinery')">×</span></div>
+                <div class="product-scroll">
+                    <strong>Machinery Inventory:</strong><br>
+                    - Haas UMC-750 5-axis CNC ($400k)<br>
+                    - 6kW Fiber Laser Cutter ($350k)<br>
+                    - Fanuc Robotic Welding Arm ($200k)<br>
+                    - HEPA Pleating Machine ($150k)<br>
+                    - Testing Rig (DOP Aerosol) ($100k)
+                </div>
+            </div>
+        </div>
+
+        <div id="win-suppliers" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">PARTNERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
+                <div class="product-scroll">
+                    <strong>Tier 1 Supply Chain:</strong><br>
+                    - 3M (Filtration Media/Ionizers)<br>
+                    - Russel Metals (Structural Stainless)<br>
+                    - ebm-papst (High-Efficiency EC Fans)<br>
+                    - Stantec (Environmental Engineering)<br>
+                    - CSA Group (Certification/Standards)
+                </div>
+            </div>
+        </div>
 
         <div id="hud-dock">
             <div id="ico-tracking" class="icon" onclick="toggleWin('tracking')">📍</div>
@@ -156,6 +234,7 @@
                 mainPlayer.playVideo();
             }
             toggleWin('tracking');
+            // Sequencing logic for breadwinner status
             setTimeout(() => toggleWin('aetheris'), 8000);
             setTimeout(() => toggleWin('specs'), 16000);
         }
