@@ -74,43 +74,20 @@
         
         /* Fixed & Scrollable HUD Dock */
         #hud-dock { 
-            position: fixed; 
-            bottom: 0; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            display: flex; 
-            gap: 15px; 
-            z-index: 300; 
-            background: rgba(0,0,0,0.8); 
-            padding: 12px 20px; 
-            border-radius: 25px 25px 0 0; 
-            border: 1px solid var(--nexus-blue); 
-            border-bottom: none; 
-            height: 80px; 
-            width: auto;
-            max-width: 95vw;
-            overflow-x: auto; 
-            -webkit-overflow-scrolling: touch;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
+            display: flex; gap: 15px; z-index: 300; background: rgba(0,0,0,0.8); 
+            padding: 12px 20px; border-radius: 25px 25px 0 0; border: 1px solid var(--nexus-blue); 
+            border-bottom: none; height: 80px; width: auto; max-width: 95vw;
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
         }
-        /* Hide scrollbar but keep functionality */
         #hud-dock::-webkit-scrollbar { display: none; }
         #hud-dock { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .icon { 
-            width: 50px; 
-            height: 50px; 
-            border: 1px solid var(--nexus-blue); 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            font-size: 1.3rem; 
-            transition: 0.3s; 
-            flex-shrink: 0; 
-        }
+        .icon { width: 50px; height: 50px; border: 1px solid var(--nexus-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem; transition: 0.3s; flex-shrink: 0; }
         .icon:hover { background: rgba(0, 212, 255, 0.2); }
         .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); color: var(--emerald); background: rgba(0, 255, 136, 0.1); }
+
+        iframe { width: 100%; height: 100%; border: none; background: rgba(0,0,0,0.2); border-radius: 10px; }
 
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
         @keyframes zoomIn { from { opacity: 0; transform: scale(0.95) translateX(-50%) translateY(10px); } to { opacity: 1; transform: scale(1) translateX(-50%) translateY(0); } }
@@ -139,53 +116,86 @@
 
         <div id="win-tracking" class="holo-window">
             <div class="text-overlay">
-                <div class="holo-header">TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
-                <div class="product-scroll">
-                    <p>Live Project Tracking & Deployment Dashboard</p>
-                    <a href="https://olympus-aetheris.vercel.app/" target="_blank" style="color: var(--emerald); display: block; margin: 20px 0; text-decoration: none; border: 1px solid var(--emerald); padding: 10px; text-align: center;">Open Tracking Dashboard →</a>
-                </div>
+                <div class="holo-header">LIVE TRACKING <span class="close" onclick="closeWin('tracking')">×</span></div>
+                <div class="product-scroll"><iframe src="https://olympus-aetheris.vercel.app/"></iframe></div>
             </div>
         </div>
 
         <div id="win-aetheris" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">AETHERIS VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
-                <div class="product-scroll"><p>Air is life. Cities are suffocating. Aetheris is the cure...</p></div>
+                <div class="product-scroll">
+                    <h3>The Air Battery</h3>
+                    <p>Cities are suffocating. Aetheris is the urban lung. Inspired by the 3M tower concept, we are building hyper-local clean air bubbles using positive ionization and HEPA H14 filtration.</p>
+                    <p>Each tower cleans 30,000m³/h, turning city smog into breathable sanctuary.</p>
+                </div>
             </div>
         </div>
 
         <div id="win-specs" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">UNIT SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
-                <div class="product-scroll"><p>Model ET-GAP-700. 7-meter breathing towers.</p></div>
+                <div class="product-scroll">
+                    <strong>Model: ET-GAP-700</strong><br>
+                    - Height: 7m | Weight: 1,200kg<br>
+                    - Filter: 3M Electrostatic + HEPA H14<br>
+                    - Power: 1,170W (Solar Compatible)<br>
+                    - Coverage: 1-3 km² bubble
+                </div>
             </div>
         </div>
 
         <div id="win-farmbuild" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">REDWATER FORGE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
-                <div class="product-scroll"><p>80-acre site. Sturgeon County, Alberta.</p></div>
+                <div class="product-scroll">
+                    <strong>Site: Sturgeon County, AB</strong><br>
+                    - Land: 80-Acre Farm Site<br>
+                    - Build: 20,000 sq ft Steel Prefab<br>
+                    - Budget: $4.1M – $7.1M CAD<br>
+                    - Strategy: Custom manufacturing with Ag-Incentives.
+                </div>
             </div>
         </div>
 
         <div id="win-schematics" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">SCHEMATICS <span class="close" onclick="closeWin('schematics')">×</span></div>
-                <div class="product-scroll"><p>20,000 sq ft prefab blueprints.</p></div>
+                <div class="product-scroll">
+                    <p>Conceptual Blueprints: 100ft x 200ft clear-span steel skeleton.</p>
+                    <ul>
+                        <li>60% Assembly Bay</li>
+                        <li>20% Filter Lab</li>
+                        <li>10% Warehouse</li>
+                        <li>10% Admin</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div id="win-machinery" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">MACHINERY <span class="close" onclick="closeWin('machinery')">×</span></div>
-                <div class="product-scroll"><p>CNC Mills, Laser Cutters, Welding stations.</p></div>
+                <div class="product-scroll">
+                    <strong>Forge Inventory:</strong><br>
+                    - Haas UMC-750 5-Axis CNC<br>
+                    - 6kW Fiber Laser Cutter<br>
+                    - Fanuc Robotic Welding Arm<br>
+                    - HEPA Pleating Station
+                </div>
             </div>
         </div>
 
         <div id="win-suppliers" class="holo-window">
             <div class="text-overlay">
                 <div class="holo-header">SUPPLIERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
-                <div class="product-scroll"><p>3M, Russel Metals, ebm-papst.</p></div>
+                <div class="product-scroll">
+                    <strong>Tier 1 Partners:</strong><br>
+                    - 3M (Filtration Media)<br>
+                    - Russel Metals (Structural SS)<br>
+                    - ebm-papst (EC Fans)<br>
+                    - Stantec (Engineering/Rezoning)
+                </div>
             </div>
         </div>
 
@@ -203,41 +213,62 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let landingPlayer, mainPlayer;
+        let landingStarted = false;
+
         function onYouTubeIframeAPIReady() {
-            landingPlayer = new YT.Player('landing-player', { videoId: 'vGXERI3UW3k', playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': 'vGXERI3UW3k' } });
-            mainPlayer = new YT.Player('main-player', { videoId: 'W54Y0cn78NY', playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': 'W54Y0cn78NY' } });
+            landingPlayer = new YT.Player('landing-player', {
+                videoId: 'vGXERI3UW3k',
+                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 0, 'loop': 1, 'playlist': 'vGXERI3UW3k', 'modestbranding': 1 }
+            });
+            mainPlayer = new YT.Player('main-player', {
+                videoId: 'W54Y0cn78NY',
+                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 0, 'loop': 1, 'playlist': 'W54Y0cn78NY', 'modestbranding': 1 }
+            });
         }
+
         function initLanding() {
             document.getElementById('entry-gate').style.display = 'none';
             document.getElementById('landing-stage').style.display = 'flex';
-            if (landingPlayer) { landingPlayer.unMute(); landingPlayer.playVideo(); }
+            if (landingPlayer) {
+                landingPlayer.unMute();
+                landingPlayer.playVideo();
+                landingStarted = true;
+            }
         }
+
         function enterTerminal() {
             if (landingPlayer) landingPlayer.pauseVideo();
             setTimeout(() => {
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
-                if (mainPlayer) { mainPlayer.unMute(); mainPlayer.playVideo(); }
-                // Auto-sequence
+                if (mainPlayer) {
+                    mainPlayer.unMute();
+                    mainPlayer.playVideo();
+                }
                 toggleWin('tracking');
+                // Auto-sequence logic
                 setTimeout(() => toggleWin('aetheris'), 8000);
                 setTimeout(() => toggleWin('specs'), 16000);
-            }, 1000);
+            }, 800;
         }
+
         function toggleWin(id) {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
-            if (ico) ico.classList.add('active');
-            // Auto-scroll the dock to the active icon
-            if (ico) ico.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            if (ico) {
+                ico.classList.add('active');
+                ico.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+            }
         }
+
         function closeWin(id) {
             document.getElementById('win-' + id).classList.remove('active');
             document.getElementById('ico-' + id).classList.remove('active');
         }
+
         function closeAllWindows() {
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
