@@ -49,7 +49,7 @@
 
         #win-oracle {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
-            width: clamp(220px, 40vw, 280px); aspect-ratio: 1 / 1;
+            width: clamp(220px, 40vw, 280px); aspect-ratio: 1/1;
             border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.4);
             overflow: hidden; z-index: 50; opacity: 0.6; cursor: pointer;
         }
@@ -124,8 +124,8 @@
 </div>
 
 <div id="landing-stage">
-    <iframe class="full-vid" 
-            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0" 
+    <iframe id="landing-video" class="full-vid"
+            src="https://www.youtube.com/embed/vGXERI3UW3k?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=vGXERI3UW3k&rel=0"
             frameborder="0" allow="autoplay"></iframe>
     <div class="abyss-btn" onclick="enterTerminal()">ENTER THE AETHER</div>
 </div>
@@ -133,13 +133,9 @@
 <div id="main-terminal">
     <div id="bg-shield" onclick="closeAllWindows()"></div>
 
-    <iframe class="full-vid" 
-            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0" 
+    <iframe id="main-video" class="full-vid"
+            src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0"
             frameborder="0" style="opacity:0.35"></iframe>
-
-    <iframe id="main-music" style="display:none;" 
-            src="https://www.youtube.com/embed/videoseries?list=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE&autoplay=1&mute=0&controls=0&loop=1&playlist=PLTjpY3xiJBoE-vnznhzvi4me3HWmU6WLE" 
-            frameborder="0" allow="autoplay"></iframe>
 
     <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
         <video class="oracle-mp4" autoplay loop muted playsinline>
@@ -365,25 +361,31 @@
 </div>
 
 <script>
-    let landingVideo, mainVideo, mainMusic;
+    let landingVideo, mainVideo;
 
     function onYouTubeIframeAPIReady() {
         landingVideo = new YT.Player('landing-video', {
-            events: { 'onReady': e => e.target.mute() }
+            events: {
+                'onReady': function(e) {
+                    e.target.mute(); // mute initially for policy compliance
+                }
+            }
         });
 
         mainVideo = new YT.Player('main-video', {
-            events: { 'onReady': e => e.target.mute() }
-        });
-
-        mainMusic = new YT.Player('main-music', {
-            events: { 'onReady': e => e.target.setVolume(60) }
+            events: {
+                'onReady': function(e) {
+                    e.target.mute();
+                }
+            }
         });
     }
 
     function initLanding() {
         document.getElementById('entry-gate').style.display = 'none';
         document.getElementById('landing-stage').style.display = 'flex';
+
+        // First real click → unmute landing video
         if (landingVideo) {
             landingVideo.unMute();
             landingVideo.playVideo();
@@ -394,17 +396,19 @@
         document.getElementById('landing-stage').style.display = 'none';
         document.getElementById('main-terminal').style.display = 'block';
 
-        if (landingVideo) landingVideo.stopVideo();
-
-        if (mainVideo) {
-            mainVideo.playVideo();
-            setTimeout(() => mainVideo.unMute(), 300);
+        // Pause & stop landing video
+        if (landingVideo) {
+            landingVideo.pauseVideo();
+            setTimeout(() => landingVideo.stopVideo(), 1000);
         }
 
-        if (mainMusic) {
-            mainMusic.playVideo();
-            mainMusic.setVolume(60);
-        }
+        // Start main video after 1-second transition delay
+        setTimeout(() => {
+            if (mainVideo) {
+                mainVideo.unMute();
+                mainVideo.playVideo();
+            }
+        }, 1000);
 
         toggleWin('aetheris');
         setTimeout(() => toggleWin('specs'), 8000);
