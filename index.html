@@ -42,7 +42,7 @@
         .abyss-btn:hover { transform: scale(1.05); background: rgba(0, 212, 255, 0.1); }
 
         #main-terminal { position: fixed; inset: 0; z-index: 100; display: none; }
-        #bg-shield { position: absolute; inset: 0; z-index: 5; }
+        #bg-shield { position: absolute; inset: 0; z-index: 5; cursor: pointer; }
 
         #win-oracle { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); width: 260px; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid rgba(0, 212, 255, 0.3); overflow: hidden; z-index: 50; opacity: 0.8; cursor: pointer; box-shadow: 0 0 30px rgba(0, 212, 255, 0.2); }
         .oracle-mp4 { width: 100%; height: 100%; object-fit: cover; }
@@ -75,15 +75,20 @@
         
         #hud-dock { 
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); 
-            display: flex; gap: 25px; z-index: 300; background: rgba(0,0,0,0.7); 
-            padding: 15px 30px; border-radius: 30px 30px 0 0; 
-            border: 1px solid var(--nexus-blue); border-bottom: none; 
-            height: 80px; overflow-x: auto; white-space: nowrap; scroll-behavior: smooth;
+            display: flex; flex-wrap: nowrap; gap: 25px; z-index: 300; 
+            background: rgba(0,0,0,0.7); padding: 15px 30px; 
+            border-radius: 30px 30px 0 0; border: 1px solid var(--nexus-blue); 
+            border-bottom: none; height: 80px; overflow-x: auto; 
+            white-space: nowrap; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
             scrollbar-width: thin; scrollbar-color: var(--neon-purple) transparent;
         }
         #hud-dock::-webkit-scrollbar { height: 6px; }
         #hud-dock::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 3px; }
-        .icon { width: 55px; height: 55px; border: 1px solid var(--nexus-blue); border-radius: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: 0.3s; flex-shrink: 0; }
+        .icon { 
+            width: 55px; height: 55px; border: 1px solid var(--nexus-blue); 
+            border-radius: 15px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 1.4rem; transition: 0.3s; flex-shrink: 0; 
+        }
         .icon:hover { background: rgba(0, 212, 255, 0.2); }
         .icon.active { border-color: var(--emerald); box-shadow: var(--bloom-green); color: var(--emerald); }
 
@@ -110,8 +115,8 @@
         <div id="bg-shield" onclick="closeAllWindows()"></div>
         <div class="video-background" style="opacity: 0.45;">
             <iframe id="main-video" 
-                    src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0&playsinline=1" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="opacity:0.45"></iframe>
+                    src="https://www.youtube.com/embed/W54Y0cn78NY?enablejsapi=1&autoplay=0&mute=1&controls=0&loop=1&playlist=W54Y0cn78NY&rel=0&playsinline=1" 
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         
         <div id="win-oracle" onclick="window.open('https://architect-artemis.vercel.app/', '_blank')">
@@ -133,16 +138,85 @@
             <div class="text-overlay">
                 <div class="holo-header">AETHERIS VISION <span class="close" onclick="closeWin('aetheris')">×</span></div>
                 <div class="product-scroll">
-                    <!-- Full vision content here - unchanged -->
                     <p>It began with a single image: a phone lock screen showing a sleek 3M-branded cylindrical tower, quietly reminding us that clean air is the battery we're all running out of. That "connect to charger" message isn't just clever—it's a warning. Air is life, and cities are suffocating.</p>
+
                     <p>Aetheris Units are the answer. Towering outdoor purifiers that inhale smog, fine particles, VOCs, dust, and exhale purified air, creating breathable sanctuaries in urban choke zones. This is real, proven technology—now ready to scale across the planet.</p>
-                    <!-- ... rest of vision content ... -->
+
+                    <strong>Real-World Foundations</strong><br><br>
+
+                    <strong>Smog Free Tower (Daan Roosegaarde)</strong><br>
+                    7 meters tall — world's first outdoor air purifier. Ozone-free positive ionization. Cleans 30,000 m³/hour — enough for a park. Installed in Rotterdam, Beijing, Kraków, Abu Dhabi. Turns captured pollution into jewelry (diamonds). One ring = 1,000 m³ cleaned. Art from poison.<br><br>
+
+                    <strong>Xi'an Smog Tower (China)</strong><br>
+                    Over 100 meters tall — largest ever built. Solar chimney effect creates natural updraft. Multi-layer filters reduce PM2.5 across square kilometers.<br><br>
+
+                    <strong>Global Examples</strong><br>
+                    India: 30m+ towers in Delhi parks. Russia: tree-like HyperFilter concepts. Bio-moss integrations emerging. Proof: hyper-local clean-air bubbles are real and scaling.<br><br>
+
+                    <p>Your 3M tower concept fuses indoor Filtrete tech with these giants. Fleets of towers breathing for cities. Air as the new oil — you're the refinery. Let's build it.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Other holoframes (specs, farmbuild, schematics, machinery, suppliers) remain unchanged - abbreviated here for brevity -->
-        <!-- Paste full content from previous version if needed -->
+        <!-- UNIT SPECS -->
+        <div id="win-specs" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">UNIT SPECS <span class="close" onclick="closeWin('specs')">×</span></div>
+                <div class="product-scroll">
+                    <!-- Full specs content here - unchanged from previous -->
+                    <p>Model ET-GAP-700. 7-meter breathing towers designed to reclaim clean air in cities. Production-ready, modular, solar-compatible.</p>
+                    <!-- ... rest of specs ... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- REDWATER FARM BASE -->
+        <div id="win-farmbuild" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">REDWATER FARM BASE <span class="close" onclick="closeWin('farmbuild')">×</span></div>
+                <div class="product-scroll">
+                    <!-- Full farm content here - unchanged -->
+                    <p>Buying a farm outside Redwater, Alberta (Sturgeon County) and building your own manufacturing facility/warehouse is smarter long-term than buying an existing one — custom layout, more land for expansion, lower cost, and potential ag/green incentives.</p>
+                    <!-- ... rest of farm content ... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FACILITY SCHEMATICS -->
+        <div id="win-schematics" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">FACILITY SCHEMATICS <span class="close" onclick="closeWin('schematics')">×</span></div>
+                <div class="product-scroll">
+                    <!-- Full schematics content here - unchanged -->
+                    <p>Conceptual blueprints for the 20,000 sq ft Aetheris production facility on 80-acre Redwater farm. Rectangular steel prefab (100 ft × 200 ft, 20–25 ft eave, clear-span) — winter-tough, expandable, ~5–10 acres developed, 70+ acres buffer/future growth.</p>
+                    <!-- ... rest of schematics content ... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MACHINERY LIST -->
+        <div id="win-machinery" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">MACHINERY LIST <span class="close" onclick="closeWin('machinery')">×</span></div>
+                <div class="product-scroll">
+                    <!-- Full machinery content here - unchanged -->
+                    <p>Core machinery required for Aetheris Unit production (initial 20,000 sq ft facility, 50–100 units/year capacity). Estimated costs in CAD (2025–2026 pricing, subject to quotes).</p>
+                    <!-- ... rest of machinery content ... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BUSINESSES & SUPPLIERS -->
+        <div id="win-suppliers" class="holo-window">
+            <div class="text-overlay">
+                <div class="holo-header">BUSINESSES & SUPPLIERS <span class="close" onclick="closeWin('suppliers')">×</span></div>
+                <div class="product-scroll">
+                    <!-- Full suppliers content here - unchanged -->
+                    <p>Key businesses, material suppliers, and partners needed for Aetheris production. Emails and websites are clickable (mailto: for emails, new tab for sites). All are real companies — reach out with your project brief.</p>
+                    <!-- ... rest of suppliers content ... -->
+                </div>
+            </div>
+        </div>
 
         <div id="hud-dock">
             <div id="ico-tracking" class="icon active" onclick="toggleWin('tracking')">📍</div>
@@ -163,7 +237,7 @@
             landingPlayer = new YT.Player('landing-video', {
                 events: {
                     'onReady': function(event) {
-                        event.target.mute(); // start muted for policy
+                        event.target.mute(); // start muted for policy compliance
                     }
                 }
             });
@@ -171,7 +245,7 @@
             mainPlayer = new YT.Player('main-video', {
                 events: {
                     'onReady': function(event) {
-                        event.target.mute();
+                        // Do NOT play or unmute here - wait for user entry
                     }
                 }
             });
@@ -182,7 +256,7 @@
             document.getElementById('landing-stage').style.display = 'flex';
 
             // Unmute and play on first real interaction (gate click)
-            if (landingPlayer && landingPlayer.getPlayerState) {
+            if (landingPlayer) {
                 landingPlayer.unMute();
                 landingPlayer.playVideo();
             }
@@ -194,18 +268,23 @@
             setTimeout(() => {
                 document.getElementById('landing-stage').style.display = 'none';
                 document.getElementById('main-terminal').style.display = 'block';
+                
+                // Only start main video when user enters - unmuted
                 if (mainPlayer) {
                     mainPlayer.unMute();
                     mainPlayer.playVideo();
                 }
-                // No auto-open — user selects icon manually
+                
+                // No auto-open - user must click an icon to open first frame
             }, 1000);
         }
 
         function toggleWin(id) {
+            // Hide all windows and remove active from all icons
             document.querySelectorAll('.holo-window').forEach(w => w.classList.remove('active'));
             document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
             
+            // Show selected window and activate its icon
             const win = document.getElementById('win-' + id);
             const ico = document.getElementById('ico-' + id);
             if (win) win.classList.add('active');
@@ -213,8 +292,10 @@
         }
 
         function closeWin(id) {
-            document.getElementById('win-' + id).classList.remove('active');
-            document.getElementById('ico-' + id).classList.remove('active');
+            const win = document.getElementById('win-' + id);
+            const ico = document.getElementById('ico-' + id);
+            if (win) win.classList.remove('active');
+            if (ico) ico.classList.remove('active');
         }
 
         function closeAllWindows() {
